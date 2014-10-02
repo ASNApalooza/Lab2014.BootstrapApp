@@ -1,0 +1,74 @@
+﻿Using System
+Using System.Data
+Using System.Configuration
+Using System.Collections.Generic
+Using System.Web
+Using System.Web.Security
+Using System.Web.UI
+Using System.Web.UI.WebControls
+Using System.Web.UI.WebControls.WebParts
+Using System.Web.UI.HtmlControls
+
+BegClass StateData Access(*Public)
+
+    BegFunc GetStates Type(List(*Of ListItem)) Access(*Public) Shared(*Yes)
+
+        DclFld states Type(List(*Of ListItem))
+
+        states = *New List(*Of ListItem)()
+        states.Add(*New ListItem("Alabama", "AL"))
+        states.Add(*New ListItem("Alaska", "AK"))
+        states.Add(*New ListItem("Arizona", "AZ"))
+        states.Add(*New ListItem("Arkansas", "AR"))
+        states.Add(*New ListItem("California", "CA"))
+        states.Add(*New ListItem("Colorado", "CO"))
+        states.Add(*New ListItem("Connecticut", "CT"))
+        states.Add(*New ListItem("District of Columbia", "DC"))
+        states.Add(*New ListItem("Delaware", "DE"))
+        states.Add(*New ListItem("Florida", "FL"))
+        states.Add(*New ListItem("Georgia", "GA"))
+        states.Add(*New ListItem("Hawaii", "HI"))
+        states.Add(*New ListItem("Idaho", "ID"))
+        states.Add(*New ListItem("Illinois", "IL"))
+        states.Add(*New ListItem("Indiana", "IN"))
+        states.Add(*New ListItem("Iowa", "IA"))
+        states.Add(*New ListItem("Kansas", "KS"))
+        states.Add(*New ListItem("Kentucky", "KY"))
+        states.Add(*New ListItem("Louisiana", "LA"))
+        states.Add(*New ListItem("Maine", "ME"))
+        states.Add(*New ListItem("Maryland", "MD"))
+        states.Add(*New ListItem("Massachusetts", "MA"))
+        states.Add(*New ListItem("Michigan", "MI"))
+        states.Add(*New ListItem("Minnesota", "MN"))
+        states.Add(*New ListItem("Mississippi", "MS"))
+        states.Add(*New ListItem("Missouri", "MO"))
+        states.Add(*New ListItem("Montana", "MT"))
+        states.Add(*New ListItem("Nebraska", "NE"))
+        states.Add(*New ListItem("Nevada", "NV"))
+        states.Add(*New ListItem("New Hampshire", "NH"))
+        states.Add(*New ListItem("New Jersey", "NJ"))
+        states.Add(*New ListItem("New Mexico", "NM"))
+        states.Add(*New ListItem("New York", "NY"))
+        states.Add(*New ListItem("North Carolina", "NC"))
+        states.Add(*New ListItem("North Dakota", "ND"))
+        states.Add(*New ListItem("Ohio", "OH"))
+        states.Add(*New ListItem("Oklahoma", "OK"))
+        states.Add(*New ListItem("Oregon", "OR"))
+        states.Add(*New ListItem("Pennsylvania", "PA"))
+        states.Add(*New ListItem("Rhode Island", "RI"))
+        states.Add(*New ListItem("South Carolina", "SC"))
+        states.Add(*New ListItem("South Dakota", "SD"))
+        states.Add(*New ListItem("Tennessee", "TN"))
+        states.Add(*New ListItem("Texas", "TX"))
+        states.Add(*New ListItem("Utah", "UT"))
+        states.Add(*New ListItem("Vermont", "VT"))
+        states.Add(*New ListItem("Virginia", "VA"))
+        states.Add(*New ListItem("Washington", "WA"))
+        states.Add(*New ListItem("West Virginia", "WV"))
+        states.Add(*New ListItem("Wisconsin", "WI"))
+        states.Add(*New ListItem("Wyoming", "WY"))
+
+        LeaveSr states
+    EndFunc
+
+EndClass
