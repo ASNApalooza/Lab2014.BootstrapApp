@@ -12,11 +12,11 @@ Using System.Web.UI.HtmlControls
 
 BegClass Contacts_Index Partial(*Yes) Access(*Public) Extends(BasePage)
 
-    BegSr Page_Load Access(*Private) Event(*This.Load)
-        DclSrParm sender Type(*Object)
-        DclSrParm e Type(System.EventArgs)
+	BegSr Page_Load Access(*Private) Event(*This.Load)
+		DclSrParm sender Type(*Object)
+		DclSrParm e Type(System.EventArgs)
 
-        DclFld contactRepo Type(IContactRepository)
+		DclFld contactRepo Type(IContactRepository)
 		DclFld contacts Type(List(*Of Contact))
 
 		// Retrieve the contact repository
@@ -30,10 +30,10 @@ BegClass Contacts_Index Partial(*Yes) Access(*Public) Extends(BasePage)
 		gridView.DataBind()
 
 		// Add <thead> and <tbody> elements to the HTML table
-		if (gridView.HeaderRow <> *Nothing)
+		If (gridView.HeaderRow <> *Nothing)
 			gridView.HeaderRow.TableSection = TableRowSection.TableHeader
 		EndIf
-    EndSr
+	EndSr
 
 	BegSr gridView_RowCommand Access(*Public) Event(*This.gridView.RowCommand)
 		DclSrParm sender Type(*Object)
