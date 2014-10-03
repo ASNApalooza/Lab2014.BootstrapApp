@@ -1,4 +1,4 @@
-﻿<%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false" CodeFile="Index.aspx.vr" Inherits="Contacts_Index" Title="Untitled Page" %>
+﻿<%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false" CodeFile="Index.aspx.vr" Inherits="Contacts_Index" Title="Contacts" %>
 
 <asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server">
     <asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static">
