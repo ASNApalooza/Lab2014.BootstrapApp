@@ -1,0 +1,59 @@
+﻿Using System
+Using System.Data
+Using System.Configuration
+Using System.Collections
+Using System.Collections.Generic
+Using System.Web
+Using System.Web.Security
+Using System.Web.UI
+Using System.Web.UI.WebControls
+Using System.Web.UI.WebControls.WebParts
+Using System.Web.UI.HtmlControls
+
+BegClass Contacts_Index Partial(*Yes) Access(*Public) Extends(BasePage)
+
+    BegSr Page_Load Access(*Private) Event(*This.Load)
+        DclSrParm sender Type(*Object)
+        DclSrParm e Type(System.EventArgs)
+
+        DclFld contactRepo Type(IContactRepository)
+		DclFld contacts Type(List(*Of Contact))
+
+		// Retrieve the contact repository
+		contactRepo = *Base.serviceRegistry.GetContactRepository()
+
+		// Retrieve all contacts
+		contacts = contactRepo.FindContacts()
+
+		// Bind contacts to the GridView
+		gridView.DataSource = contacts
+		gridView.DataBind()
+
+		// Add <thead> and <tbody> elements to the HTML table
+		if (gridView.HeaderRow <> *Nothing)
+			gridView.HeaderRow.TableSection = TableRowSection.TableHeader
+		EndIf
+    EndSr
+
+	BegSr gridView_RowCommand Access(*Public) Event(*This.gridView.RowCommand)
+		DclSrParm sender Type(*Object)
+		DclSrParm e Type(GridViewCommandEventArgs)
+
+		DclFld index Type(*Integer4)
+		DclFld row Type(GridViewRow)
+		DclFld id Type(*String)
+
+		index = Convert.ToInt32(e.CommandArgument)
+		row = gridView.Rows[index]
+		id = row.Cells[0].Text
+
+		If (e.CommandName = "ShowContact")
+			Response.Redirect("Show.aspx?id=" + id)
+		ElseIf (e.CommandName = "EditContact")
+			Response.Redirect("Edit.aspx?id=" + id)
+		ElseIf (e.CommandName = "DeleteContact")
+			Response.Redirect("Delete.aspx?id=" + id)
+		EndIf
+	EndSr
+
+EndClass
