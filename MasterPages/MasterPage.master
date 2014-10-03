@@ -1,0 +1,53 @@
+﻿<%@ Master Language="AVR" AutoEventWireup="false" CodeFile="MasterPage.master.vr" Inherits="MasterPages_MasterPage" %>
+<!DOCTYPE html>
+<html lang="en">
+<head id="Head1" runat="server">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Contacts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Assets/css/bootstrap.css" rel="stylesheet">
+    <link href="~/Assets/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="~/Assets/css/main.css" rel="stylesheet">
+</head>
+<body role="application">
+<form id="form1" runat="server">
+<asp:Panel ID="wrapper" CssClass="wrapper" runat="server" ClientIDMode="Static">
+    <nav id="navigation" class="navigation navbar navbar-inverse navbar-static-top" role="navigation">
+        <asp:Panel ID="navbarContainer" CssClass="container" runat="server" ClientIDMode="Static">
+            <asp:Panel ID="navbarHeader" CssClass="navbar-header" runat="server" ClientIDMode="Static">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </asp:Panel>
+            <asp:Panel ID="navbarCollapse" CssClass="navbar-collapse collapse" runat="server" ClientIDMode="Static">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Contacts <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="<%= Page.ResolveUrl("~") %>Contacts/Index.aspx">Index</a></li>
+                            <li><a href="<%= Page.ResolveUrl("~") %>Contacts/New.aspx">New Contact</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </asp:Panel><!-- #navbarCollapse -->
+        </asp:Panel><!-- #navbarContainer -->
+    </nav><!-- #navigation -->
+    <asp:Panel ID="main" CssClass="main container" runat="server" ClientIDMode="Static" style="min-height:800px;" role="main">
+        <asp:ContentPlaceHolder ID="cphMain" runat="server"></asp:ContentPlaceHolder>
+    </asp:Panel><!-- #main -->
+    <asp:Panel ID="footer" CssClass="footer container" runat="server" ClientIDMode="Static" role="contentinfo">
+        <p class="well well-sm text-center">&copy; <%= DateTime.Now.Year %> ASNA. All Rights Reserved.</p>
+    </asp:Panel><!-- #footer -->
+</asp:Panel><!-- #wrapper -->
+</form>
+<script src="<%= Page.ResolveUrl("~") %>Assets/js/vendor/jquery.js"></script>
+<script src="<%= Page.ResolveUrl("~") %>Assets/js/vendor/bootstrap.js"></script>
+<script src="<%= Page.ResolveUrl("~") %>Assets/js/validation.js"></script>
+</body>
+</html>
