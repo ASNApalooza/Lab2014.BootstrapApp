@@ -1,0 +1,94 @@
+﻿Using System
+Using System.Data
+Using System.Configuration
+Using System.Collections
+Using System.Collections.Generic
+Using System.Web
+Using System.Web.Security
+Using System.Web.UI
+Using System.Web.UI.WebControls
+Using System.Web.UI.WebControls.WebParts
+Using System.Web.UI.HtmlControls
+
+BegClass Contacts_Edit Partial(*Yes) Access(*Public) Extends(BasePage)
+
+	BegSr Page_Load Access(*Private) Event(*This.Load)
+		DclSrParm sender Type(*Object)
+		DclSrParm e Type(System.EventArgs)
+
+		If (NOT Page.IsPostBack)
+			LoadStatesDropDown()
+			LoadContactData()
+		EndIf
+	EndSr
+
+	BegSr LoadStatesDropDown Access(*Private)
+
+		DclFld states Type(List(*Of ListItem))
+
+		ddlState.Items.Add(*New ListItem("Please select a state", ""))
+
+		states = StateData.GetStates()
+
+		ForEach item Type(ListItem) Collection(states)
+			ddlState.Items.Add(item)
+		EndFor
+	EndSr
+
+	BegSr LoadContactData Access(*Private)
+
+		DclFld contactEntity Type(Contact)
+
+		contactEntity = *Base.FetchContact()
+
+		// Contact name for the panel heading
+		contactName.Text = contactEntity.firstName.Trim() + " " + contactEntity.lastName.Trim()
+
+		// Form fields
+		txtCompany.Text = contactEntity.company.Trim()
+		txtFirstName.Text = contactEntity.firstName.Trim()
+		txtLastName.Text = contactEntity.lastName.Trim()
+		txtEmail.Text = contactEntity.email.Trim()
+		txtPhone.Text = contactEntity.phone.Trim()
+		txtAddress1.Text = contactEntity.address1.Trim()
+		If (contactEntity.address2 <> *Nothing)
+			txtAddress2.Text = contactEntity.address2.ToString().Trim()
+		Else
+			txtAddress2.Text = String.Empty
+		EndIf
+		txtCity.Text = contactEntity.city.Trim()
+		ddlState.SelectedValue = contactEntity.state.Trim()
+		txtPostalCode.Text = contactEntity.postalCode.Trim()
+	EndSr
+
+	BegSr btnSubmit_Click Access(*Private) Event(*This.btnSubmit.Click)
+		DclSrParm sender Type(*Object)
+		DclSrParm e Type(System.EventArgs)
+		
+		DclFld contactEntity Type(Contact)
+		DclFld contactRepo Type(IContactRepository)
+
+		contactEntity = *Base.FetchContact()
+
+		contactEntity.company = txtCompany.Text.Trim()
+		contactEntity.firstName = txtFirstName.Text.Trim()
+		contactEntity.lastName = txtLastName.Text.Trim()
+		contactEntity.email = txtEmail.Text.Trim()
+		contactEntity.phone = txtPhone.Text.Trim()
+		contactEntity.address1 = txtAddress1.Text.Trim()
+		If (Not String.IsNullOrEmpty(txtAddress2.Text.Trim()))
+			contactEntity.address2 = txtAddress2.Text.Trim()
+		Else
+			contactEntity.address2 = *Nothing
+		EndIf
+		contactEntity.city = txtCity.Text.Trim()
+		contactEntity.state = ddlState.SelectedValue.Trim()
+		contactEntity.postalCode = txtPostalCode.Text.Trim()
+
+		contactRepo = *Base.serviceRegistry.GetContactRepository()
+		contactRepo.UpdateContact(contactEntity)
+
+		Response.Redirect("Show.aspx?id=" + contactEntity.id.ToString())
+	EndSr
+
+EndClass

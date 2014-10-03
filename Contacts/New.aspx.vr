@@ -1,0 +1,67 @@
+﻿Using System
+Using System.Data
+Using System.Configuration
+Using System.Collections
+Using System.Collections.Generic
+Using System.Web
+Using System.Web.Security
+Using System.Web.UI
+Using System.Web.UI.WebControls
+Using System.Web.UI.WebControls.WebParts
+Using System.Web.UI.HtmlControls
+
+BegClass Contacts_New Partial(*Yes) Access(*Public) Extends(BasePage)
+
+	BegSr Page_Load Access(*Private) Event(*This.Load)
+		DclSrParm sender Type(*Object)
+		DclSrParm e Type(System.EventArgs)
+
+		If (NOT Page.IsPostBack)
+			LoadStatesDropDown()
+		EndIf
+	EndSr
+
+	BegSr LoadStatesDropDown Access(*Private)
+
+		DclFld states Type(List(*Of ListItem))
+
+		ddlState.Items.Add(*New ListItem("Please select a state", ""))
+
+		states = StateData.GetStates()
+
+		ForEach item Type(ListItem) Collection(states)
+			ddlState.Items.Add(item)
+		EndFor
+	EndSr
+
+	BegSr btnSubmit_Click Access(*Private) Event(*This.btnSubmit.Click)
+		DclSrParm sender Type(*Object)
+		DclSrParm e Type(System.EventArgs)
+		
+		DclFld contactEntity Type(Contact)
+		DclFld contactRepo Type(IContactRepository)
+
+		contactEntity = *New Contact()
+
+		contactEntity.company = txtCompany.Text.Trim()
+		contactEntity.firstName = txtFirstName.Text.Trim()
+		contactEntity.lastName = txtLastName.Text.Trim()
+		contactEntity.email = txtEmail.Text.Trim()
+		contactEntity.phone = txtPhone.Text.Trim()
+		contactEntity.address1 = txtAddress1.Text.Trim()
+		If (Not String.IsNullOrEmpty(txtAddress2.Text.Trim()))
+			contactEntity.address2 = txtAddress2.Text.Trim()
+		Else
+			contactEntity.address2 = *Nothing
+		EndIf
+		contactEntity.city = txtCity.Text.Trim()
+		contactEntity.state = ddlState.SelectedValue.Trim()
+		contactEntity.postalCode = txtPostalCode.Text.Trim()
+
+		contactRepo = *Base.serviceRegistry.GetContactRepository()
+		contactRepo.AddContact(contactEntity)
+
+		Response.Redirect("Index.aspx")
+	EndSr
+
+EndClass
