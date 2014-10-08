@@ -1,5 +1,5 @@
 requirejs.config({
-    baseUrl: '/app_assets/js',
+    baseUrl: '/Lab2014.BootstrapApp/app_assets/js',
     paths: {
         'backbone': '../vendor/backbone/backbone',
         'bootstrap': '../vendor/bootstrap/dist/js/bootstrap',
