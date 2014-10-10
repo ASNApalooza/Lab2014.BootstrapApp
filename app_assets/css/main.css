@@ -8865,3 +8865,7 @@ button.close {
 .fa-meanpath:before {
   content: "";
 }
+
+body {
+  margin-top: 50px;
+}

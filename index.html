@@ -22,8 +22,26 @@
                 </button>
             </div><!-- #navbar-header -->
             <div id="navbar-collapse" class="navbar-collapse collapse">
-                <ul id="navbar-menu" class="navbar-menu nav navbar-nav">
-                    <li><a href="/Lab2014.BootstrapApp/">Home</a></li>
+                <ul id="navbar-menu" class="navbar-menu nav navbar-nav" role="menu">
+                    <li><a href="/Lab2014.BootstrapApp/" data-asna-nav="route:index">Overview</a></li>
+                    <li class="dropdown">
+                        <a href="/Lab2014.BootstrapApp/#tut0" class="dropdown" data-toggle="dropdown">
+                            Tutorial <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/Lab2014.BootstrapApp/#tut-0-start" data-asna-nav="route:tut0">Start</a></li>
+                            <li><a href="/Lab2014.BootstrapApp/#tut-1-domain" data-asna-nav="route:tut1">Domain</a></li>
+                            <li><a href="/Lab2014.BootstrapApp/#tut-2-data" data-asna-nav="route:tut2">Data</a></li>
+                            <li><a href="/Lab2014.BootstrapApp/#tut-3-base" data-asna-nav="route:tut3">Base</a></li>
+                            <li><a href="/Lab2014.BootstrapApp/#tut-4-index" data-asna-nav="route:tut4">Index</a></li>
+                            <li><a href="/Lab2014.BootstrapApp/#tut-5-show" data-asna-nav="route:tut5">Show</a></li>
+                            <li><a href="/Lab2014.BootstrapApp/#tut-6-forms" data-asna-nav="route:tut6">Forms</a></li>
+                            <li><a href="/Lab2014.BootstrapApp/#tut-7-delete" data-asna-nav="route:tut7">Delete</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="https://github.com/ASNApalooza/Lab2014.BootstrapApp">Source</a></li>
+                    <li><a href="/Lab2014.BootstrapApp/#downloads" data-asna-nav="route:downloads">Downloads</a></li>
+                    <li><a href="/Lab2014.BootstrapApp/#slides" data-asna-nav="route:slides">Slides</a></li>
                 </ul><!-- #navbar-menu -->
             </div><!-- #navbar-collapse -->
         </div><!-- #navbar-container -->
@@ -33,6 +51,9 @@
     <div id="main" class="main" role="main">
     </div><!-- #main -->
     <footer id="footer" class="footer" role="contentinfo">
+        <div class="well well-sm text-center">
+            &copy; 2014 ASNA. All Rights Reserved.
+        </div>
     </footer><!-- #footer -->
 </div><!-- #wrapper -->
 <script src="/Lab2014.BootstrapApp/app_assets/vendor/requirejs/require.js"></script>
