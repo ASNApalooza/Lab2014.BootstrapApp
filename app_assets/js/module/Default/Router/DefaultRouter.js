@@ -32,6 +32,9 @@ function (App, DefaultController) {
                 App.setDocTitle('Overview');
                 App.router.navigate('overview');
                 controller.indexAction();
+                App.removeNavTriggers();
+                App.addNavTriggers();
+                prettyPrint();
             }
         };
 

@@ -31,6 +31,9 @@ function (App, SlideController) {
                 App.setDocTitle('Slides');
                 App.router.navigate('slides');
                 controller.indexAction();
+                App.removeNavTriggers();
+                App.addNavTriggers();
+                prettyPrint();
             }
         };
 

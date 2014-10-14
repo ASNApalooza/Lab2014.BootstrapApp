@@ -1,3 +1,100 @@
-<div class="page-header">
-    <h2>Tutorial Part 0 - Start</h2>
+<div class="row">
+    <div class="col-sm-3 col-sm-push-9 clearfix">
+        <div class="pull-right" style="padding-top:30px;">
+            <a class="btn btn-default" href="https://github.com/ASNApalooza/Lab2014.BootstrapApp/archive/part-0-start.zip" download="Lab2014.BootstrapApp-part-0-start.zip">
+                <span class="fa fa-download"></span> Download
+            </a>
+        </div>
+    </div>
+    <div class="col-sm-9 col-sm-pull-3">
+        <div class="page-header">
+            <h2>Part 0: Start</h2>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p>
+            This part of the tutorial contains instructions for installing the empty
+            project template. You should already have Visual Studio 2012 and ASNA
+            Visual RPG for .NET installed.
+        </p>
+        <div class="alert alert-info text-center">
+            Visual Studio <a href="http://www.visualstudio.com/downloads/download-visual-studio-vs">can be downloaded from here</a>.<br>
+            ASNA Visual RPG for .NET <a href="http://devnet.asna.com/">is available at the ASNA Developer Network</a>.
+        </div>
+        <p>
+            Download the project template using the button at the top of this page,
+            and move the zip file to your projects folder.
+        </p>
+        <p>
+            Unzip the file and rename the extracted folder from
+            <code>Lab2014.BootstrapApp-part-0-start</code> to <code>BootstrapApp</code>.
+        </p>
+        <p>
+            You should now have a <code>BootstrapApp</code> folder that contains
+            the following structure:
+        </p>
+        <pre>
+BootstrapApp
+|
+|--- App_Data
+|   |
+|   |--- Application.mdf
+|   |--- Application_log.ldf
+|   |--- ContactSeeder.zip
+|   |--- dbo.Contacts.sql
+|
+|--- .gitignore
+|--- README.md
+|--- Web.Debug.config
+|--- Web.config
+|--- favicon.ico</pre>
+        <p>
+            The App_Data folder contains an SQL database as an alternative to the
+            local DataGate database. The database layer is covered in
+            <a href="/Lab2014.BootstrapApp/#tutorial/part-2-data" data-asna-nav="route:tutorial:data">part 2</a>
+            of the tutorial.
+        </p>
+        <p>
+            The <code>.gitignore</code> and <code>README.md</code> files are used
+            by the <a href="http://git-scm.com/">Git</a> repository.
+        </p>
+        <p>
+            The <code>Web.config</code> file is mostly empty other than a
+            <a href="http://msdn.microsoft.com/en-us/library/vstudio/ms178411%28v=vs.100%29.aspx">connection string</a>
+            for the SQL database:
+        </p>
+<pre class="prettyprint linenums">&lt;?xml version="1.0"?&gt;
+&lt;!--
+  For more information on how to configure your ASP.NET application, please visit
+  http://go.microsoft.com/fwlink/?LinkId=169433
+  --&gt;
+&lt;configuration&gt;
+  &lt;connectionStrings&gt;
+    &lt;add name="Application" providerName="System.Data.SqlClient"
+        connectionString="Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\Application.mdf;Integrated Security=True" /&gt;
+  &lt;/connectionStrings&gt;
+  &lt;system.web&gt;
+      &lt;compilation debug="true" targetFramework="4.5" /&gt;
+  &lt;/system.web&gt;
+&lt;/configuration&gt;</pre>
+        <p>
+            The <code>favicon.ico</code> file provides a simple bookmark icon for
+            the project.
+        </p>
+        <p>
+            Open Visual Studio and then click &ldquo;<strong>FILE</strong>&rdquo;
+            then &ldquo;<strong>Open Web Site...</strong>&rdquo; on the menu bar.
+            Browse to the BootstrapApp folder and click &ldquo;<strong>OPEN</strong>&rdquo;.
+        </p>
+        <p>
+            Once the website loads, we can move on and get started.
+        </p>
+        <hr>
+        <ul class="pager">
+            <li class="next"><a href="/Lab2014.BootstrapApp/#tutorial/part-1-domain" data-asna-nav="route:tutorial:domain">Next &rarr;</a></li>
+        </ul>
+        <hr>
+    </div>
 </div>

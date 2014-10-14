@@ -38,48 +38,72 @@ function (App, TutorialController) {
                 App.setDocTitle('Start');
                 App.router.navigate('tutorial/part-0-start');
                 controller.startAction();
+                App.removeNavTriggers();
+                App.addNavTriggers();
+                prettyPrint();
             },
             domainAction: function () {
                 var controller = getController();
                 App.setDocTitle('Domain');
                 App.router.navigate('tutorial/part-1-domain');
                 controller.domainAction();
+                App.removeNavTriggers();
+                App.addNavTriggers();
+                prettyPrint();
             },
             dataAction: function () {
                 var controller = getController();
                 App.setDocTitle('Data');
                 App.router.navigate('tutorial/part-2-data');
                 controller.dataAction();
+                App.removeNavTriggers();
+                App.addNavTriggers();
+                prettyPrint();
             },
             baseAction: function () {
                 var controller = getController();
                 App.setDocTitle('Base');
                 App.router.navigate('tutorial/part-3-base');
                 controller.baseAction();
+                App.removeNavTriggers();
+                App.addNavTriggers();
+                prettyPrint();
             },
             indexAction: function () {
                 var controller = getController();
                 App.setDocTitle('Index');
                 App.router.navigate('tutorial/part-4-index');
                 controller.indexAction();
+                App.removeNavTriggers();
+                App.addNavTriggers();
+                prettyPrint();
             },
             showAction: function () {
                 var controller = getController();
                 App.setDocTitle('Show');
                 App.router.navigate('tutorial/part-5-show');
                 controller.showAction();
+                App.removeNavTriggers();
+                App.addNavTriggers();
+                prettyPrint();
             },
             formsAction: function () {
                 var controller = getController();
                 App.setDocTitle('Forms');
                 App.router.navigate('tutorial/part-6-forms');
                 controller.formsAction();
+                App.removeNavTriggers();
+                App.addNavTriggers();
+                prettyPrint();
             },
             deleteAction: function () {
                 var controller = getController();
                 App.setDocTitle('Delete');
                 App.router.navigate('tutorial/part-7-delete');
                 controller.deleteAction();
+                App.removeNavTriggers();
+                App.addNavTriggers();
+                prettyPrint();
             }
         };
 

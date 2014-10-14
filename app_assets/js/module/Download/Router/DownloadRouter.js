@@ -31,6 +31,9 @@ function (App, DownloadController) {
                 App.setDocTitle('Downloads');
                 App.router.navigate('downloads');
                 controller.indexAction();
+                App.removeNavTriggers();
+                App.addNavTriggers();
+                prettyPrint();
             }
         };
 
