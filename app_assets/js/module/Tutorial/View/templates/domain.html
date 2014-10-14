@@ -1,6 +1,189 @@
 <div class="page-header">
     <h2>Part 1: Domain</h2>
 </div>
+<p>
+    Creating a domain model is the first (and most important step) in building a
+    good web application. Since this contacts application is a very simple example,
+    we will not be concerned with real business logic.
+</p>
+<p>
+    Our domain model will only consist of a simple <strong>Contact</strong>
+    <a href="http://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model">entity</a>,
+    and a <a href="http://martinfowler.com/eaaCatalog/repository.html"><strong>Repository</strong> interface</a>.
+    A real-world <a href="http://martinfowler.com/eaaCatalog/domainModel.html">Domain Model</a>
+    should contain the core business logic of an application. With our simple
+    application, we are not implementing
+    <a href="http://dddcommunity.org/learning-ddd/what_is_ddd/">Domain Driven Design</a>, so an
+    <a href="http://www.martinfowler.com/bliki/AnemicDomainModel.html">anemic domain model</a>
+    is not as bad as it would be on a large project.
+</p>
+<p>
+    Why bother? Defining our Contact as a strongly typed data structure provides
+    IntelliSense in Visual Studio and compile-time safety of our data. Creating a
+    Repository interface provides a simple contract that we can use to create,
+    fetch, update, and delete contacts. In <a href="/Lab2014.BootstrapApp/#tutorial/part-2-data" data-asna-nav="route:tutorial:data">part 2</a>
+    we will see how this lets us change databases without changing most of the
+    code.
+</p>
+<p>
+    The Contact entity starts as a plain-old AVR class:
+</p>
+<pre class="prettyprint linenums">
+Using System
+
+BegClass Contact Access(*Public)
+
+    // TODO: Add properties
+
+EndClass</pre>
+<p>
+    Each property contains a simple getter and setter:
+</p>
+<pre class="prettyprint">
+DclFld _id Type(*Integer4) Access(*Protected)
+BegProp id Type(*Integer4) Access(*Public)
+    BegSet
+        _id = *PropVal
+    EndSet
+    BegGet
+        LeaveSr _id
+    EndGet
+EndProp</pre>
+<p>
+    Each contact needs to support the following values:
+</p>
+<ul>
+    <li>id (integer)</li>
+    <li>company (string)</li>
+    <li>firstName (string)</li>
+    <li>lastName (string)</li>
+    <li>email (string)</li>
+    <li>phone (string)</li>
+    <li>address1 (string)</li>
+    <li>address2 (string)</li>
+    <li>city (string)</li>
+    <li>state (string)</li>
+    <li>postalCode (string)</li>
+</ul>
+<p>
+    Once the Contact class is complete, it should look like this:
+</p>
+<pre class="prettyprint linenums">
+Using System
+
+BegClass Contact Access(*Public)
+
+    DclFld _id Type(*Integer4) Access(*Protected)
+    BegProp id Type(*Integer4) Access(*Public)
+        BegSet
+            _id = *PropVal
+        EndSet
+        BegGet
+            LeaveSr _id
+        EndGet
+    EndProp
+
+    DclFld _company Type(*String) Access(*Protected)
+    BegProp company Type(*String) Access(*Public)
+        BegSet
+            _company = *PropVal
+        EndSet
+        BegGet
+            LeaveSr _company
+        EndGet
+    EndProp
+
+    DclFld _firstName Type(*String) Access(*Protected)
+    BegProp firstName Type(*String) Access(*Public)
+        BegSet
+            _firstName = *PropVal
+        EndSet
+        BegGet
+            LeaveSr _firstName
+        EndGet
+    EndProp
+
+    DclFld _lastName Type(*String) Access(*Protected)
+    BegProp lastName Type(*String) Access(*Public)
+        BegSet
+            _lastName = *PropVal
+        EndSet
+        BegGet
+            LeaveSr _lastName
+        EndGet
+    EndProp
+
+    DclFld _email Type(*String) Access(*Protected)
+    BegProp email Type(*String) Access(*Public)
+        BegSet
+            _email = *PropVal
+        EndSet
+        BegGet
+            LeaveSr _email
+        EndGet
+    EndProp
+
+    DclFld _phone Type(*String) Access(*Protected)
+    BegProp phone Type(*String) Access(*Public)
+        BegSet
+            _phone = *PropVal
+        EndSet
+        BegGet
+            LeaveSr _phone
+        EndGet
+    EndProp
+
+    DclFld _address1 Type(*String) Access(*Protected)
+    BegProp address1 Type(*String) Access(*Public)
+        BegSet
+            _address1 = *PropVal
+        EndSet
+        BegGet
+            LeaveSr _address1
+        EndGet
+    EndProp
+
+    DclFld _address2 Type(*String) Access(*Protected)
+    BegProp address2 Type(*String) Access(*Public)
+        BegSet
+            _address2 = *PropVal
+        EndSet
+        BegGet
+            LeaveSr _address2
+        EndGet
+    EndProp
+
+    DclFld _city Type(*String) Access(*Protected)
+    BegProp city Type(*String) Access(*Public)
+        BegSet
+            _city = *PropVal
+        EndSet
+        BegGet
+            LeaveSr _city
+        EndGet
+    EndProp
+
+    DclFld _state Type(*String) Access(*Protected)
+    BegProp state Type(*String) Access(*Public)
+        BegSet
+            _state = *PropVal
+        EndSet
+        BegGet
+            LeaveSr _state
+        EndGet
+    EndProp
+
+    DclFld _postalCode Type(*String) Access(*Protected)
+    BegProp postalCode Type(*String) Access(*Public)
+        BegSet
+            _postalCode = *PropVal
+        EndSet
+        BegGet
+            LeaveSr _postalCode
+        EndGet
+    EndProp
+
+EndClass</pre>
 <hr>
 <ul class="pager">
     <li class="previous"><a href="/Lab2014.BootstrapApp/#tutorial/part-0-start" data-asna-nav="route:tutorial:start">&larr; Previous</a></li>
