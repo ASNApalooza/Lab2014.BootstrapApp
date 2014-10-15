@@ -31,13 +31,12 @@ function (App, DownloadController) {
                 App.setDocTitle('Downloads');
                 App.router.navigate('downloads');
                 controller.indexAction();
-                App.removeNavTriggers();
-                App.addNavTriggers();
-                prettyPrint();
+                App.trigger('asna:page_load');
             }
         };
 
         App.on('route:downloads:index', function () {
+            App.trigger('asna:page_unload');
             API.indexAction();
         });
 

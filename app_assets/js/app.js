@@ -23,8 +23,8 @@ function (Backbone, Marionette, $, _) {
         document.title = str + ' | Get out of the CSS Tarpit with Bootstrap';
     };
 
-    // Routing events
-    App.addNavTriggers = function () {
+    // Add navigation events
+    var addNavTriggers = function () {
         var $triggers = $('a[data-asna-nav^="route"]');
         if ($triggers.length > 0) {
             $triggers.on('click.asna-nav', function (e) {
@@ -38,12 +38,51 @@ function (Backbone, Marionette, $, _) {
             });
         }
     };
-    App.removeNavTriggers = function () {
+
+    // Remove navigation events
+    var removeNavTriggers = function () {
         var $triggers = $('a[data-asna-nav^="route"]');
         if ($triggers.length > 0) {
             $triggers.off('click.asna-nav');
         }
     };
+
+    // Add scrollTop to history state
+    var updateHistoryState = function () {
+        if (Modernizr.history) {
+            history.replaceState(
+                _.extend(history.state || {}, {
+                    scrollTop: $('html').scrollTop()
+                }),
+                document.title,
+                window.location
+            );
+        }
+    };
+
+    // Read scrollTop from history state
+    var updateScrollTop = function () {
+        var scrollTop = 0;
+        if (Modernizr.history) {
+            if (history.state && history.state.scrollTop) {
+                scrollTop = history.state.scrollTop;
+            }
+        }
+        $('html').scrollTop(scrollTop);
+    };
+
+    // Custom page_unload event handler
+    App.on('asna:page_unload', function () {
+        updateHistoryState();
+        removeNavTriggers();
+    });
+
+    // Custom page_load event handler
+    App.on('asna:page_load', function () {
+        addNavTriggers();
+        prettyPrint();
+        updateScrollTop();
+    });
 
     // Enable routing
     App.on('start', function (config) {

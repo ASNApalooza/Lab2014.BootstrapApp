@@ -31,13 +31,12 @@ function (App, SlideController) {
                 App.setDocTitle('Slides');
                 App.router.navigate('slides');
                 controller.indexAction();
-                App.removeNavTriggers();
-                App.addNavTriggers();
-                prettyPrint();
+                App.trigger('asna:page_load');
             }
         };
 
         App.on('route:slides:index', function () {
+            App.trigger('asna:page_unload');
             API.indexAction();
         });
 

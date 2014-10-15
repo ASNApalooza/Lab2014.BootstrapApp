@@ -32,13 +32,12 @@ function (App, DefaultController) {
                 App.setDocTitle('Overview');
                 App.router.navigate('overview');
                 controller.indexAction();
-                App.removeNavTriggers();
-                App.addNavTriggers();
-                prettyPrint();
+                App.trigger('asna:page_load');
             }
         };
 
         App.on('route:default:index', function () {
+            App.trigger('asna:page_unload');
             API.indexAction();
         });
 

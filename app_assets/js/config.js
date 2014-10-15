@@ -1,6 +1,7 @@
 requirejs.config({
     baseUrl: '/Lab2014.BootstrapApp/app_assets/js',
     paths: {
+        'almond': '../vendor/almond/almond',
         'backbone': '../vendor/backbone/backbone',
         'bootstrap': '../vendor/bootstrap/dist/js/bootstrap',
         'jquery': '../vendor/jquery/dist/jquery',

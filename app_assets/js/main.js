@@ -13,11 +13,6 @@ function (App) {
 
     window.App = App;
 
-    // Routing events
-    App.addInitializer(function () {
-        App.addNavTriggers();
-    });
-
     App.start({ baseUrl: $('#base_url').val() });
 
 });
