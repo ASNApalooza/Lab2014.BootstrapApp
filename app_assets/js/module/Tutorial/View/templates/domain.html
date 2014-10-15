@@ -7,6 +7,19 @@
     we will not be concerned with real business logic.
 </p>
 <p>
+    The application classes will live in various folders within the <code>App_Code</code>
+    folder. To create the folder, right-click on the website name in the Visual Studio
+    Solution Explorer. Hover over &ldquo;<strong>Add</strong>&rdquo; and then hover
+    over &ldquo;<strong>Add ASP.NET Folder</strong>&rdquo;. Click on
+    &ldquo;<strong>App_Code</strong>&rdquo;.
+</p>
+<p>
+    Create a <code>Domain</code> folder. Right-click on the <code>App_Code</code>
+    folder within the Solution Explorer. Hover over &ldquo;<strong>Add</strong>&rdquo;
+    and then click on &ldquo;<strong>New Folder</strong>&rdquo;. Name the new folder
+    &ldquo;<strong>Domain</strong>&rdquo; and press <code>Enter</code>.
+</p>
+<p>
     Our domain model will only consist of a simple <strong>Contact</strong>
     <a href="http://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model">entity</a>,
     and a <a href="http://martinfowler.com/eaaCatalog/repository.html"><strong>Repository</strong> interface</a>.
@@ -22,12 +35,28 @@
     IntelliSense in Visual Studio and compile-time safety of our data. Creating a
     Repository interface provides a simple contract that we can use to create,
     fetch, update, and delete contacts. In <a href="/Lab2014.BootstrapApp/#tutorial/part-2-data" data-asna-nav="route:tutorial:data">part 2</a>
-    we will see how this lets us change databases without changing most of the
+    we will see how this allows us to change databases without changing most of the
     code.
 </p>
+<h3>Contact Entity</h3>
 <p>
-    The Contact entity starts as a plain-old AVR class:
+    The Contact entity starts as a plain AVR class. Right-click on the <code>Domain</code>
+    folder in the Solution Explorer. Hover over &ldquo;<strong>Add</strong>&rdquo; and
+    click &ldquo;<strong>Class</strong>&rdquo;. At the prompt, enter <strong>Contact</strong>
+    and click &ldquo;<strong>Ok</strong>&rdquo;. Replace the contents of the new
+    file with a basic class declaration:
 </p>
+<div class="panel-group" id="contactentity-start">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#contactentity-start" href="#contactentity-start-body">
+                    <code>App_Code\Domain\Contact.vr</code>
+                </a>
+            </h4>
+        </div>
+        <div id="contactentity-start-body" class="panel-collapse collapse">
+            <div class="panel-body">
 <pre class="prettyprint linenums">
 Using System
 
@@ -36,8 +65,12 @@ BegClass Contact Access(*Public)
     // TODO: Add properties
 
 EndClass</pre>
+            </div>
+        </div>
+    </div>
+</div>
 <p>
-    Each property contains a simple getter and setter:
+    Each property consists of a simple getter and setter:
 </p>
 <pre class="prettyprint">
 DclFld _id Type(*Integer4) Access(*Protected)
@@ -68,6 +101,17 @@ EndProp</pre>
 <p>
     Once the Contact class is complete, it should look like this:
 </p>
+<div class="panel-group" id="contactentity-complete">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#contactentity-complete" href="#contactentity-complete-body">
+                    <code>App_Code\Domain\Contact.vr</code>
+                </a>
+            </h4>
+        </div>
+        <div id="contactentity-complete-body" class="panel-collapse collapse">
+            <div class="panel-body">
 <pre class="prettyprint linenums">
 Using System
 
@@ -184,6 +228,114 @@ BegClass Contact Access(*Public)
     EndProp
 
 EndClass</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<h3>Contact Repository</h3>
+<p>
+    The repository will define how we expect to interact with contacts. In this case,
+    the requirements are simple.
+</p>
+<p>
+    Right-click on the <code>Domain</code> folder in the solution explorer. Hover
+    over &ldquo;<strong>Add</strong>&rdquo; and click &ldquo;<strong>Class</strong>&rdquo;.
+    At the prompt, enter <strong>IContactRepository</strong> and click
+    &ldquo;<strong>Ok</strong>&rdquo;. Replace the contents of the new file with
+    a basic interface declaration:
+</p>
+<div class="panel-group" id="icontactrepository-start">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#icontactrepository-start" href="#icontactrepository-start-body">
+                    <code>App_Code\Domain\IContactRepository.vr</code>
+                </a>
+            </h4>
+        </div>
+        <div id="icontactrepository-start-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+Using System
+
+BegInterface IContactRepository
+
+    // TODO: Add methods
+
+EndInterface</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    An interface contains only method signatures. We would like to be able to
+    perform the following operations:
+</p>
+<ul>
+    <li>Retrieve all of the contacts (as a list)</li>
+    <li>Retrieve a contact with a given id</li>
+    <li>Retrieve a contact with a given email</li>
+    <li>Add a new contact</li>
+    <li>Update an existing contact</li>
+    <li>Remove an existing contact</li>
+</ul>
+<p>
+    Notice we do not need to know where the contacts come from, or where they are
+    saved, but we can assume they are stored somewhere (like a database).
+</p>
+<p>
+    Adding a using statement with <code>System.Collections.Generic</code> and the
+    new methods should result in a complete interface:
+</p>
+<div class="panel-group" id="icontactrepository-complete">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#icontactrepository-complete" href="#icontactrepository-complete-body">
+                    <code>App_Code\Domain\IContactRepository.vr</code>
+                </a>
+            </h4>
+        </div>
+        <div id="icontactrepository-complete-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+Using System
+Using System.Collections.Generic
+
+BegInterface IContactRepository
+
+    BegFunc FindContacts Type(List(*Of Contact))
+    EndFunc
+
+    BegFunc FindContact Type(Contact)
+        DclSrParm id Type(*Integer4)
+    EndFunc
+
+    BegFunc FindContactByEmail Type(Contact)
+        DclSrParm email Type(*String)
+    EndFunc
+
+    BegSr AddContact
+        DclSrParm contactEntity Type(Contact)
+    EndSr
+
+    BegSr UpdateContact
+        DclSrParm contactEntity Type(Contact)
+    EndSr
+
+    BegSr RemoveContact
+        DclSrParm contactEntity Type(Contact)
+    EndSr
+
+EndInterface</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    In the next step, we will map the domain layer to a database. Click the
+    <strong>Next</strong> button below to continue.
+</p>
 <hr>
 <ul class="pager">
     <li class="previous"><a href="/Lab2014.BootstrapApp/#tutorial/part-0-start" data-asna-nav="route:tutorial:start">&larr; Previous</a></li>

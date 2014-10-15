@@ -23,6 +23,7 @@
             Visual Studio <a href="http://www.visualstudio.com/downloads/download-visual-studio-vs">can be downloaded from here</a>.<br>
             ASNA Visual RPG for .NET <a href="http://devnet.asna.com/">is available at the ASNA Developer Network</a>.
         </div>
+        <h3>Installation</h3>
         <p>
             Download the project template using the button at the top of this page,
             and move the zip file to your projects folder.
@@ -65,6 +66,17 @@ BootstrapApp
             <a href="http://msdn.microsoft.com/en-us/library/vstudio/ms178411%28v=vs.100%29.aspx">connection string</a>
             for the SQL database:
         </p>
+        <div class="panel-group" id="webconfig-source">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#webconfig-source" href="#webconfig-source-body">
+                            <code>Web.config</code>
+                        </a>
+                    </h4>
+                </div>
+                <div id="webconfig-source-body" class="panel-collapse collapse">
+                    <div class="panel-body">
 <pre class="prettyprint linenums">&lt;?xml version="1.0"?&gt;
 &lt;!--
   For more information on how to configure your ASP.NET application, please visit
@@ -79,6 +91,10 @@ BootstrapApp
       &lt;compilation debug="true" targetFramework="4.5" /&gt;
   &lt;/system.web&gt;
 &lt;/configuration&gt;</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
         <p>
             The <code>favicon.ico</code> file provides a simple bookmark icon for
             the project.
