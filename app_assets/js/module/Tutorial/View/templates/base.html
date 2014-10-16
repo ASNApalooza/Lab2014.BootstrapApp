@@ -120,7 +120,7 @@ mobile first projects on the web.
 // Requires Twitter Bootstrap v3 to display styles
 (function (root, $) {
 
-    "use strict";
+    &quot;use strict&quot;;
 
     // Save a local reference to original ValidatorUpdateDisplay
     var SystemValidatorUpdateDisplay = root.ValidatorUpdateDisplay;
@@ -467,6 +467,158 @@ Assets
         </div>
     </div>
 </div>
+<p>
+    The first section is contained within a <code>nav</code> element with an ID of
+    <code>navigation</code>. This is a Twitter Bootstrap Navbar component, and the
+    markup and options are described in detail in the
+    <a href="http://getbootstrap.com/components/#navbar">Navbar documentation</a>.
+    In this variation, we are using <code>Panel</code> controls in place of
+    <code>&lt;div&gt;</code> elements. We have a single dropdown menu with two
+    links. We have not created any pages yet, but they will work in the completed
+    application.
+</p>
+<p>
+    Secondly, we included a <code>Panel</code> control with the ID <code>main</code>.
+    This panel will render a <code>&lt;div&gt;</code> element that includes the
+    Bootstrap <code>container</code> class. That class defines an area for the
+    <a href="http://getbootstrap.com/css/#grid">Grid</a> system. Within this Panel,
+    we&rsquo;ve added a <code>ContentPlaceHolder</code> control. A Content Place Holder
+    allows us to define where our page content is inserted. All of our different
+    page content will be contained here.
+</p>
+<p>
+    Finally, we added a <code>Panel</code> control with ID <code>footer</code> to
+    contain some copyright information on each page. We use a simple paragraph tag
+    with some Bootstrap classes. The <code>well</code> and <code>well-sm</code>
+    classes create a Bootstrap <a href="http://getbootstrap.com/components/#wells">well</a>
+    effect. The <code>text-center</code> class centers the paragraph text horizontally.
+</p>
+<p>
+    Since we are not allowing code in the Master Page, you can leave the code-behind
+    file as-is, or make it explicit like I do:
+</p>
+<div class="panel-group" id="masterpage-vr-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#masterpage-vr-source" href="#masterpage-vr-source-body">
+                    <code>MasterPages\MasterPage.master.vr</code>
+                </a>
+            </h4>
+        </div>
+        <div id="masterpage-vr-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+Using System
+Using System.Data
+Using System.Configuration
+Using System.Collections
+Using System.Web
+Using System.Web.Security
+Using System.Web.UI
+Using System.Web.UI.WebControls
+Using System.Web.UI.WebControls.WebParts
+Using System.Web.UI.HtmlControls
+
+BegClass MasterPages_MasterPage Partial(*Yes) Access(*Public) Extends(System.Web.UI.MasterPage)
+EndClass
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<h3>BasePage</h3>
+<p>
+    We do have some common AVR code that we would like to use on each page. Creating
+    a Base class that each page can extend is one way to accomplish this. The class
+    must extend <code>System.Web.UI.Page</code> to be valid. Each page should have
+    access to the <code>Registry</code> we created in
+    <a href="/Lab2014.BootstrapApp/#tutorial/part-2-data" data-asna-nav="route:tutorial:data">part 2</a>.
+</p>
+<p>
+    Also, three of our pages need a method to fetch a single contact for that page.
+    The method will read an ID from the Request query string and contains some
+    simple error handling. The BasePage is not likely the best place for a method
+    that two pages will not need. Adding it here will keep us from cutting-and-pasting
+    code into multiple pages, so we could add it to the BasePage now and make note
+    that this method could be refactored at a later time.
+</p>
+<p>
+    In the Solution Explorer, right-click the <code>App_Code</code> folder and
+    create a new class called <code>BasePage</code>. It should contain the following
+    code:
+</p>
+<div class="panel-group" id="basepage-vr-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#basepage-vr-source" href="#basepage-vr-source-body">
+                    <code>App_Code\BasePage.vr</code>
+                </a>
+            </h4>
+        </div>
+        <div id="basepage-vr-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+Using System
+Using System.Data
+Using System.Configuration
+Using System.Collections
+Using System.Web
+Using System.Web.Security
+Using System.Web.UI
+Using System.Web.UI.WebControls
+Using System.Web.UI.WebControls.WebParts
+Using System.Web.UI.HtmlControls
+
+BegClass BasePage Partial(*Yes) Access(*Public) Extends(System.Web.UI.Page)
+
+    DclFld serviceRegistry Type(Registry) Access(*Protected)
+
+    BegSr Page_Init Access(*Private) Event(*This.Init)
+        DclSrParm sender Type(*Object)
+        DclSrParm e Type(System.EventArgs)
+
+        // Provide Registry to pages
+        serviceRegistry = *New Registry()
+    EndSr
+
+    BegFunc FetchContact Type(Contact) Access(*Protected)
+
+        DclFld contactEntity Type(Contact)
+        DclFld contactRepo Type(IContactRepository)
+        DclFld id Type(*Integer4)
+
+        Try
+            id = Convert.ToInt32(Request["id"])
+        Catch Name(e) Type(Exception)
+            Throw *New System.Web.HttpException(400, "Invalid 'id' parameter")
+        EndTry
+
+        contactRepo = serviceRegistry.GetContactRepository()
+        contactEntity = contactRepo.FindContact(id)
+
+        If (contactEntity = *Nothing)
+            Throw *New System.Web.HttpException(404, "Contact not found")
+        EndIf
+
+        LeaveSr contactEntity
+    EndFunc
+
+EndClass
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    In the next part, we will start adding ASPX pages that extend this
+    <code>BasePage</code> class. To access the <code>Registry</code> instance,
+    we only need to use the protected field <code>*Base.serviceRegistry</code>.
+    In the pages that reference a single contact, we can use the
+    <code>*Base.FetchContact()</code> method. Click the <strong>Next</strong>
+    button below to continue.
+</p>
 <hr>
 <ul class="pager">
     <li class="previous"><a href="/Lab2014.BootstrapApp/#tutorial/part-2-data" data-asna-nav="route:tutorial:data">&larr; Previous</a></li>

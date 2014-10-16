@@ -1,6 +1,146 @@
 <div class="page-header">
     <h2>Part 4: Index</h2>
 </div>
+<p>
+    Now to the fun stuff. We need to create a page that can display a list of
+    contacts. For the sake of brevity, we will leave out some features like paging,
+    but this should demonstrate some key Twitter Bootstrap interface concepts.
+</p>
+<p>
+    In the Solution Explorer, create a new <code>Contacts</code> folder in the
+    website root. We will place our ASPX pages in this folder. Right-click on the
+    <code>Contacts</code> folder, hover over &ldquo;<strong>Add</strong>&rdquo;
+    and click &ldquo;<strong>Add New Item...</strong>&rdquo;. At the prompt, scroll
+    down to find Web Form and select it. Change the name to <code>Index.aspx</code>
+    and make sure both checkboxes are checked (&ldquo;Place code in a separate
+    file&rdquo; and &ldquo;Select master page&rdquo;), then click
+    &ldquo;<strong>Add</strong>&rdquo;.
+</p>
+<p>
+    In the &ldquo;<strong>Select a Master Page</strong>&rdquo; prompt, select
+    &ldquo;<strong>MasterPages</strong>&rdquo; in the left pane. Select
+    &ldquo;<strong>MasterPage.master</strong>&rdquo; in the right pane and click
+    &ldquo;<strong>OK</strong>&rdquo;.
+</p>
+<p>
+    The <code>Index.aspx</code> file should look like this at first:
+</p>
+<div class="panel-group" id="index1-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#index1-source" href="#index1-source-body">
+                    <code>Contacts\Index.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="index1-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="Index.aspx.vr" Inherits="Contacts_Index" Title="Untitled Page" %&gt;
+&lt;asp:Content ID="Content1" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    Start by changing the Title from <code>Untitled Page</code> to <code>Contacts</code>.
+    We will also change the ID of the <code>Content</code> control to <code>contentMain</code>
+</p>
+<p>
+    Using the Standard section of the Toolbox, drag a new <code>Panel</code> control
+    inside the <code>Content</code> control. This will create the <code>&lt;div&gt;</code>
+    element that will surround our main content. In fact, a good ID for this control
+    would be <code>pnlMainContent</code>. Also, use the properties window to set
+    the <code>ClientIDMode</code> to <code>Static</code>. Our page should look like
+    this so far:
+</p>
+<div class="panel-group" id="index2-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#index2-source" href="#index2-source-body">
+                    <code>Contacts\Index.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="index2-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="Index.aspx.vr" Inherits="Contacts_Index" Title="Contacts" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    Now we will create a <code>Panel</code> to contain any additional button controls
+    we need on this page. We should only need one on this page. Drag another
+    <code>Panel</code> control inside <code>pnlMainControl</code>. Give the new
+    control an ID of <code>pnlIndexControls</code>. Add a <code>CssClass</code> of
+    <code>pull-right</code> and set the <code>ClientIDMode</code> to <code>Static</code>.
+    Bootstrap will make sure this <code>Panel</code> floats the right side because
+    of the <code>pull-right</code> class.
+</p>
+<p>
+    We need to add a &ldquo;New Contact&rdquo; button inside this new panel. In our
+    application, the new contact form will be on another page. Fortunately we can
+    create a simple link and use Bootstrap to make it look like a
+    <a href="http://getbootstrap.com/css/#buttons-tags">button</a>. Create an HTML
+    link with the following classes:
+    <code class="prettyprint">class="btn btn-sm btn-primary"</code>. In Bootstrap terms
+    these classes define the basic button styles, size, and color.
+</p>
+<div class="alert alert-info">
+    Tip: Instead of dragging an HTML control from the toolbar, try typing <code>a</code>
+    and pressing the <code>Tab</code> key. Typing any HTML tag name and pressing tab will
+    expand some basic markup for you.
+</div>
+<p>
+    Between the <code>&lt;a&gt;</code> tags, create an empty <code>&lt;span&gt;</code>
+    element with the following classes:
+    <code class="prettyprint">&lt;span class="glyphicon glyphicon-plus"&gt;&lt;/span&gt;</code>
+    Glyphicons are font-based icons you can create with simple markup. No need to
+    load images for simple icons! The page should now look similar to this:
+</p>
+<div class="panel-group" id="index3-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#index3-source" href="#index3-source-body">
+                    <code>Contacts\Index.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="index3-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="Index.aspx.vr" Inherits="Contacts_Index" Title="Contacts" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+        &lt;asp:Panel ID="pnlIndexControls" CssClass="pull-right" runat="server" ClientIDMode="Static"&gt;
+            &lt;a href="&lt;%= Page.ResolveUrl("~") %&gt;Contacts/New.aspx" class="btn btn-sm btn-primary"&gt;
+                &lt;span class="glyphicon glyphicon-plus"&gt;&lt;/span&gt; New Contact
+            &lt;/a&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlIndexControls --&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
 <hr>
 <ul class="pager">
     <li class="previous"><a href="/Lab2014.BootstrapApp/#tutorial/part-3-base" data-asna-nav="route:tutorial:base">&larr; Previous</a></li>
