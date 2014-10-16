@@ -1,6 +1,472 @@
 <div class="page-header">
     <h2>Part 3: Base</h2>
 </div>
+<h3>Twitter Bootstrap</h3>
+<blockquote>
+Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive,
+mobile first projects on the web.
+</blockquote>
+<p>
+    Installing <a href="http://getbootstrap.com/">Twitter Bootstrap</a> is not
+    difficult. We will need to download some files before setting up a MasterPage.
+</p>
+<div class="row">
+    <div class="col-sm-5 col-md-4 col-sm-push-7 col-md-push-8 clearfix">
+        <a class="btn btn-social btn-github pull-left" style="margin-top:16px;" href="https://github.com/twbs/bootstrap/archive/v3.2.0.zip" download="bootstrap-3.2.0.zip">
+            <span class="fa fa-download"></span> Bootstrap
+        </a>
+        <a class="btn btn-social btn-github pull-right" style="margin-top:16px;" href="https://github.com/jquery/jquery/archive/1.11.1.zip" download="jquery-1.11.1.zip">
+            <span class="fa fa-download"></span> jQuery
+        </a>
+    </div>
+    <div class="col-sm-7 col-md-8 col-sm-pull-5 col-md-pull-4">
+        <h3>Installation</h3>
+    </div>
+</div>
+<div class="alert alert-info">
+    Organizing all of the static assets (images, fonts, css, and javascript) in
+    a subfolder is a good way to keep the root directory clean.
+</div>
+<p>
+    Create a new <code>Assets</code> folder in the website root. Click on the
+    Bootstrap button above to download version 3.2.0. Move the downloaded zip
+    file to the new <code>Assets</code> folder.
+</p>
+<p>
+    Unzip the file, and you should have a folder named <code>bootstrap-3.2.0</code>.
+    We are only concerned with the files in the <code>dist</code> folder. Browse
+    to <code>bootstrap-3.2.0\dist</code> in the File Explorer, and you should see
+    three folders named css, fonts, and js. Highlight and copy all three folders
+    and browse back to the project <code>Assets</code> folder. Paste the copied
+    folders and then delete the <code>bootstrap-3.2.0</code> folder and
+    <code>bootstrap-3.2.0.zip</code> file.
+</p>
+<p>
+    Many projects will have more JavaScript files, so I normally create folders
+    to organize those files as well. Create a <code>vendor</code> folder within
+    the <code>js</code> folder, and move the Bootstrap JavaScript files there.
+</p>
+<p>
+    Twitter Bootstrap depends on the <a href="http://jquery.com/">jQuery</a>
+    library as well. Click on the jQuery button above to download version 1.11.1
+    of the library. Move the zip file into the project <code>Assets</code> folder
+    and unzip the file. Browse to the <code>jquery-1.11.1\dist</code> folder and
+    copy the two JavaScript files. Paste the copied files into the project
+    <code>Assets\js\vendor</code> folder.
+</p>
+<p>
+    Back in Visual Studio, you may need to click on the website name in the
+    Solution Explorer and then click the refresh button to see the new folders.
+    We need to create a simple CSS file (optional), and one JavaScript file.
+</p>
+<p>
+    In the solution explorer, open the <code>Assets</code> folder, and the
+    <code>css</code> folder. Right-click on the <code>css</code> folder, hover
+    over &ldquo;<strong>Add</strong>&rdquo; and click
+    &ldquo;<strong>Add New Item...</strong>&rdquo;. When prompted, scroll to find
+    Style Sheet and select it. Change the name to <code>main.css</code> and click
+    &ldquo;<strong>Add</strong>&rdquo;. Replace the contents of the new file with
+    this simple CSS rule:
+</p>
+<div class="panel-group" id="main-css-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#main-css-source" href="#main-css-source-body">
+                    <code>Assets\css\main.css</code>
+                </a>
+            </h4>
+        </div>
+        <div id="main-css-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+.navbar {
+    margin-bottom: 0;
+}
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    This simply removes the margin on the bottom of the Bootstrap navbar control.
+    While Twitter Bootstrap provides great CSS styles, you can easily extend or
+    change any of those styles. Just be sure to load custom styles after the
+    Bootstrap stylesheets.
+</p>
+<p>
+    Back in the Solution Explorer, open the <code>js</code> folder. Right-click on
+    the <code>js</code> folder, hover over &ldquo;<strong>Add</strong>&rdquo; and
+    click &ldquo;<strong>Add New Item...</strong>&rdquo;. When prompted, scroll
+    to find JavaScript File and select it. Change the name to
+    <code>validation.js</code> and click &ldquo;<strong>Add</strong>&rdquo;.
+    Paste this validation library into the new file:
+</p>
+<div class="panel-group" id="validation-js-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#validation-js-source" href="#validation-js-source-body">
+                    <code>Assets\js\validation.js</code>
+                </a>
+            </h4>
+        </div>
+        <div id="validation-js-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+// Twitter Bootstrap Validation
+//
+// Requires jQuery
+// Requires Twitter Bootstrap v3 to display styles
+(function (root, $) {
+
+    "use strict";
+
+    // Save a local reference to original ValidatorUpdateDisplay
+    var SystemValidatorUpdateDisplay = root.ValidatorUpdateDisplay;
+
+    // Checks if a form group has errors
+    //
+    // If the form group contains visible error messages, will return true
+    //
+    // param jQuery object $group A jQuery wrapped form-group element to search
+    //
+    // return boolean
+    function hasErrors($group) {
+        var hasErrors = false;
+        $group.find('.help-block').each(function () {
+            var $item = $(this);
+            if ($item.is(':visible')) {
+                hasErrors = true;
+            }
+        });
+
+        return hasErrors;
+    }
+
+    // Custom validate function
+    //
+    // If the field is not valid, span contains an error message
+    //
+    // param DOMElement val span element with two attached properties
+    //       val.isvalid (bool) Whether or not the field is valid
+    //       val.controltovalidate (string) The field ID
+    //
+    // return void
+    function validate(val) {
+        // Call the default ASP.NET display of validation errors
+        SystemValidatorUpdateDisplay(val);
+
+        // Add the help-text CSS class
+        $(val).addClass('help-block');
+
+        // Retrieve the closest ancestor form-group element
+        var $group = $('#' + val.controltovalidate).closest('.form-group');
+
+        // Add or remove error classes as needed
+        if (!val.isvalid) {
+            $group.addClass('has-error');
+        } else {
+            if (!hasErrors($group)) {
+                $group.removeClass('has-error');
+            }
+        }
+    }
+
+    // Replace ASP.NET ValidatorUpdateDisplay with validate function
+    $(document).ready(function () {
+        root.ValidatorUpdateDisplay = validate;
+    });
+
+})(this, jQuery);
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    This is a simple library I wrote that will modify the behavior of ASP.NET
+    validator controls to add Twitter Bootstrap styles to the page. Feel free to
+    use it in other projects.
+</p>
+<p>
+    You should have an <code>Assets</code> folder with the following structure:
+</p>
+<pre>
+Assets
++---css
+|       bootstrap-theme.css
+|       bootstrap-theme.css.map
+|       bootstrap-theme.min.css
+|       bootstrap.css
+|       bootstrap.css.map
+|       bootstrap.min.css
+|       main.css
+|
++---fonts
+|       glyphicons-halflings-regular.eot
+|       glyphicons-halflings-regular.svg
+|       glyphicons-halflings-regular.ttf
+|       glyphicons-halflings-regular.woff
+|
+\---js
+    |   validation.js
+    |
+    \---vendor
+            bootstrap.js
+            bootstrap.min.js
+            jquery.js
+            jquery.min.js
+</pre>
+<h3>MasterPage</h3>
+<p>
+    Before we create a Master Page, it is important to understand what problems
+    we are trying to solve with each of these tools. A Master Page is the tool
+    ASP.NET provides to create a reusable HTML layout for our pages. It is my
+    opinion, therefore, that a Master Page should contain common markup (HTML),
+    styles (CSS), and client-side scripts (JavaScript) only. That means the
+    Master Page should not contain any code-behind.
+</p>
+<p>
+    In a large application, you may have more than one Master Page. We will also
+    create a BasePage class, so any common AVR code is available to every page.
+</p>
+<p>
+    Create a <code>MasterPages</code> folder in the website root directory.
+    Right-click on the <code>MasterPages</code> folder and hover over
+    &ldquo;<strong>Add</strong>&rdquo; and click on
+    &ldquo;<strong>Master Page</strong>&rdquo;. At the prompt, enter
+    <code>MasterPage</code> and press <code>Enter</code>.
+</p>
+<p>
+    Leave the line at the top of the new file that should look like this:
+</p>
+<pre class="prettyprint">
+&lt;%@ Master Language="AVR" AutoEventWireup="false" CodeFile="MasterPage.master.vr" Inherits="MasterPages_MasterPage" %&gt;
+</pre>
+<p>
+    Replace the rest of the markup with a simple page structure from
+    <a href="http://html5boilerplate.com/">HTML5 boilerplate</a>. The file should
+    look like the following:
+</p>
+<div class="panel-group" id="masterpage1">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#masterpage1" href="#masterpage1-body">
+                    <code>MasterPages\MasterPage.master</code>
+                </a>
+            </h4>
+        </div>
+        <div id="masterpage1-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Master Language="AVR" AutoEventWireup="false" CodeFile="MasterPage.master.vr" Inherits="MasterPages_MasterPage" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head id="Head1" runat="server"&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+    &lt;title&gt;Contacts&lt;/title&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+&lt;/head&gt;
+&lt;body role="application"&gt;
+&lt;form id="form1" runat="server"&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    This is standard HTML5 markup with some ASP.NET additions, including the
+    <code>&lt;head&gt;</code> and <code>&lt;form&gt;</code> tags with
+    <code>runat="server"</code> attributes.
+</p>
+<p>
+    To link the CSS and JavaScript, add the following tags to the page:
+</p>
+<div class="panel-group" id="masterpage2">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#masterpage2" href="#masterpage2-body">
+                    <code>MasterPages\MasterPage.master</code>
+                </a>
+            </h4>
+        </div>
+        <div id="masterpage2-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Master Language="AVR" AutoEventWireup="false" CodeFile="MasterPage.master.vr" Inherits="MasterPages_MasterPage" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head id="Head1" runat="server"&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+    &lt;title&gt;Contacts&lt;/title&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+    &lt;link href="~/Assets/css/bootstrap.css" rel="stylesheet"&gt;
+    &lt;link href="~/Assets/css/bootstrap-theme.css" rel="stylesheet"&gt;
+    &lt;link href="~/Assets/css/main.css" rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body role="application"&gt;
+&lt;form id="form1" runat="server"&gt;
+&lt;/form&gt;
+&lt;script src="&lt;%= Page.ResolveUrl("~") %&gt;Assets/js/vendor/jquery.js"&gt;&lt;/script&gt;
+&lt;script src="&lt;%= Page.ResolveUrl("~") %&gt;Assets/js/vendor/bootstrap.js"&gt;&lt;/script&gt;
+&lt;script src="&lt;%= Page.ResolveUrl("~") %&gt;Assets/js/validation.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    Since the CSS <code>&lt;link&gt;</code> tags are located within the
+    <code>&lt;head&gt;</code> tag with <code>runat="server"</code> specified,
+    starting the path with a <code>~</code> will help us resolve the root URL.
+    Loading JavaScript can be trickier, so we use the <code>Page.ResolveUrl("~")</code>
+    method to provide us with a base URL.
+</p>
+<p>
+    Now we will add our first control. Open the Visual Studio Toolbox and navigate
+    to the <code>Standard</code> controls. Find the <code>Panel</code> control,
+    and drag one inside the <code>form</code> element. Open the Properties window
+    and select the new control. Set the following properties:
+</p>
+<dl class="dl-horizontal">
+    <dt>(ID)</dt>
+    <dd>wrapper</dd>
+    <dt>CssClass</dt>
+    <dd>wrapper</dd>
+    <dt>ClientIDMode</dt>
+    <dd>Static</dd>
+</dl>
+<p>
+    It is also helpful to comment the end of the control like this:
+    <code class="prettyprint">&lt;!-- #wrapper --&gt;</code>.
+    The MasterPage.master file should look like the following:
+</p>
+<div class="panel-group" id="masterpage3">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#masterpage3" href="#masterpage3-body">
+                    <code>MasterPages\MasterPage.master</code>
+                </a>
+            </h4>
+        </div>
+        <div id="masterpage3-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Master Language="AVR" AutoEventWireup="false" CodeFile="MasterPage.master.vr" Inherits="MasterPages_MasterPage" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head id="Head1" runat="server"&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+    &lt;title&gt;Contacts&lt;/title&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+    &lt;link href="~/Assets/css/bootstrap.css" rel="stylesheet"&gt;
+    &lt;link href="~/Assets/css/bootstrap-theme.css" rel="stylesheet"&gt;
+    &lt;link href="~/Assets/css/main.css" rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body role="application"&gt;
+&lt;form id="form1" runat="server"&gt;
+&lt;asp:Panel ID="wrapper" CssClass="wrapper" runat="server" ClientIDMode="Static"&gt;
+&lt;/asp:Panel&gt;&lt;!-- #wrapper --&gt;
+&lt;/form&gt;
+&lt;script src="&lt;%= Page.ResolveUrl("~") %&gt;Assets/js/vendor/jquery.js"&gt;&lt;/script&gt;
+&lt;script src="&lt;%= Page.ResolveUrl("~") %&gt;Assets/js/vendor/bootstrap.js"&gt;&lt;/script&gt;
+&lt;script src="&lt;%= Page.ResolveUrl("~") %&gt;Assets/js/validation.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    The <code>Panel</code> control will render an HTML <code>&lt;div&gt;</code>
+    element. These elements are useful for creating page <em>divisions</em> for
+    layout and styling purposes. After pasting in the remaining markup inside the
+    wrapper, we&rsquo;ll describe each section. The <code>MasterPage.master</code>
+    file should look like the following:
+</p>
+<div class="panel-group" id="masterpage4">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#masterpage4" href="#masterpage4-body">
+                    <code>MasterPages\MasterPage.master</code>
+                </a>
+            </h4>
+        </div>
+        <div id="masterpage4-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Master Language="AVR" AutoEventWireup="false" CodeFile="MasterPage.master.vr" Inherits="MasterPages_MasterPage" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head id="Head1" runat="server"&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+    &lt;title&gt;Contacts&lt;/title&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+    &lt;link href="~/Assets/css/bootstrap.css" rel="stylesheet"&gt;
+    &lt;link href="~/Assets/css/bootstrap-theme.css" rel="stylesheet"&gt;
+    &lt;link href="~/Assets/css/main.css" rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body role="application"&gt;
+&lt;form id="form1" runat="server"&gt;
+&lt;asp:Panel ID="wrapper" CssClass="wrapper" runat="server" ClientIDMode="Static"&gt;
+    &lt;nav id="navigation" class="navigation navbar navbar-inverse navbar-static-top" role="navigation"&gt;
+        &lt;asp:Panel ID="navbarContainer" CssClass="container" runat="server" ClientIDMode="Static"&gt;
+            &lt;asp:Panel ID="navbarHeader" CssClass="navbar-header" runat="server" ClientIDMode="Static"&gt;
+                &lt;button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse"&gt;
+                    &lt;span class="sr-only"&gt;Toggle navigation&lt;/span&gt;
+                    &lt;span class="icon-bar"&gt;&lt;/span&gt;
+                    &lt;span class="icon-bar"&gt;&lt;/span&gt;
+                    &lt;span class="icon-bar"&gt;&lt;/span&gt;
+                &lt;/button&gt;
+            &lt;/asp:Panel&gt;
+            &lt;asp:Panel ID="navbarCollapse" CssClass="navbar-collapse collapse" runat="server" ClientIDMode="Static"&gt;
+                &lt;ul class="nav navbar-nav"&gt;
+                    &lt;li class="dropdown"&gt;
+                        &lt;a href="#" class="dropdown-toggle" data-toggle="dropdown"&gt;
+                            Contacts &lt;span class="caret"&gt;&lt;/span&gt;
+                        &lt;/a&gt;
+                        &lt;ul class="dropdown-menu" role="menu"&gt;
+                            &lt;li&gt;&lt;a href="&lt;%= Page.ResolveUrl("~") %&gt;Contacts/Index.aspx"&gt;Index&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="&lt;%= Page.ResolveUrl("~") %&gt;Contacts/New.aspx"&gt;New Contact&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/asp:Panel&gt;&lt;!-- #navbarCollapse --&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #navbarContainer --&gt;
+    &lt;/nav&gt;&lt;!-- #navigation --&gt;
+    &lt;asp:Panel ID="main" CssClass="main container" runat="server" ClientIDMode="Static" style="min-height:800px;" role="main"&gt;
+        &lt;asp:ContentPlaceHolder ID="cphMain" runat="server"&gt;&lt;/asp:ContentPlaceHolder&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #main --&gt;
+    &lt;asp:Panel ID="footer" CssClass="footer container" runat="server" ClientIDMode="Static" role="contentinfo"&gt;
+        &lt;p class="well well-sm text-center"&gt;&amp;copy; &lt;%= DateTime.Now.Year %&gt; ASNA. All Rights Reserved.&lt;/p&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #footer --&gt;
+&lt;/asp:Panel&gt;&lt;!-- #wrapper --&gt;
+&lt;/form&gt;
+&lt;script src="&lt;%= Page.ResolveUrl("~") %&gt;Assets/js/vendor/jquery.js"&gt;&lt;/script&gt;
+&lt;script src="&lt;%= Page.ResolveUrl("~") %&gt;Assets/js/vendor/bootstrap.js"&gt;&lt;/script&gt;
+&lt;script src="&lt;%= Page.ResolveUrl("~") %&gt;Assets/js/validation.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
 <hr>
 <ul class="pager">
     <li class="previous"><a href="/Lab2014.BootstrapApp/#tutorial/part-2-data" data-asna-nav="route:tutorial:data">&larr; Previous</a></li>
