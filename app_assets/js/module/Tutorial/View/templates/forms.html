@@ -191,6 +191,349 @@
         </div>
     </div>
 </div>
+<p>
+    The controls used for each form field will follow a pattern. First create a
+    <code>Panel</code> control with a <code>CssClass</code> of <code>form-group</code>.
+    That <code>Panel</code> will contain a <code>Label</code> control, followed by
+    another <code>Panel</code> control. The <code>Label</code> control will have
+    a CSS class to set a column width, and the <code>control-label</code> class.
+    The <code>Label</code> will also have a <code>Text</code> property and an
+    <code>AssociatedControlID</code> property to set. The <code>Panel</code> will
+    have a CSS class for column width as well. Within the <code>Panel</code> will
+    be the form control and any validation controls. The pattern is easier to see
+    with a few examples.
+</p>
+<p>
+    Drag a <code>Panel</code> control inside <code>pnlContactFormPanelBody</code>
+    and change the ID to <code>pnlCompany</code>. Set the <code>CssClass</code>
+    to <code>form-group</code> and make the ID static. Drag a <code>Label</code>
+    control inside the new panel and change the ID to <code>lblCompany</code>. Set
+    the <code>CssClass</code> to <code>col-sm-3 control-label</code> and make the
+    ID static. Set the <code>AssociatedControlID</code> to <code>txtCompany</code>,
+    which we do not have yet. Set the <code>Text</code> to <code>Company</code>.
+</p>
+<p>
+    Drag a <code>Panel</code> control after <code>lblCompany</code> and change the
+    ID to <code>pnlTxtCompany</code>. Set the <code>CssClass</code> to
+    <code>col-sm-9</code> and make the ID static. Drag a <code>TextBox</code> control
+    inside of the new panel and change the ID to <code>txtCompany</code>. Set the
+    <code>CssClass</code> to <code>form-control</code> and make the ID static.
+</p>
+<p>
+    Drag a <code>RequiredFieldValidator</code> control from the Validation section
+    of the Toolbox after <code>txtCompany</code> and change the ID to
+    <code>requiredCompany</code>. Set the <code>Display</code> to <code>Dynamic</code>.
+    Set the <code>ControlToValidate</code> to <code>txtCompany</code>. Set the
+    <code>ErrorMessage</code> to <code>Please enter the company name</code>.
+</p>
+<p>
+    Drag a <code>RegularExpressionValidator</code> control from the Validation
+    section of the Toolbox after the other validator and change the ID to
+    <code>lengthCompany</code>. Set the <code>Display</code> to <code>Dynamic</code>.
+    Set the <code>ControlToValidate</code> to <code>txtCompany</code>. Set the
+    <code>ErrorMessage</code> to <code>Company cannot be longer than 40 characters</code>.
+    Finally, set the <code>ValidationExpression</code> to <code>^.{0,40}$</code>.
+    That regular expression will ensure the company name is not longer than 40
+    characters.
+</p>
+<p>
+    With the first form group complete, the page should look like this:
+</p>
+<div class="panel-group" id="new5-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#new5-source" href="#new5-source-body">
+                    <code>Contacts\New.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="new5-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="New.aspx.vr" Inherits="Contacts_New" Title="New Contact" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+        &lt;asp:Panel ID="pnlPageHeader" CssClass="page-header" runat="server" ClientIDMode="Static"&gt;
+            &lt;h2&gt;Contact Form&lt;/h2&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlPageHeader --&gt;
+        &lt;asp:Panel ID="pnlContactFormRow" CssClass="row" runat="server" ClientIDMode="Static"&gt;
+            &lt;asp:Panel ID="pnlContactFormCol" CssClass="col-sm-6 col-sm-offset-3" runat="server" ClientIDMode="Static"&gt;
+                &lt;asp:Panel ID="pnlContactForm" CssClass="form-horizontal" runat="server" ClientIDMode="Static"&gt;
+                    &lt;asp:Panel ID="pnlContactFormPanel" CssClass="panel panel-default" runat="server" ClientIDMode="Static"&gt;
+                        &lt;asp:Panel ID="pnlContactFormPanelHeading" CssClass="panel-heading" runat="server" ClientIDMode="Static"&gt;
+                            &lt;h3 class="panel-title"&gt;New Contact&lt;/h3&gt;
+                        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormPanelHeading --&gt;
+                        &lt;asp:Panel ID="pnlContactFormPanelBody" CssClass="panel-body" runat="server" ClientIDMode="Static"&gt;
+                            &lt;asp:Panel ID="pnlCompany" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblCompany" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtCompany"
+                                    Text="Company"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtCompany" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtCompany" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredCompany" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtCompany"
+                                        ErrorMessage="Please enter the company name"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthCompany" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtCompany"
+                                        ErrorMessage="Company cannot be longer than 40 characters"
+                                        ValidationExpression="^.{0,40}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormPanelBody --&gt;
+                        &lt;asp:Panel ID="pnlContactFormPanelFooter" CssClass="panel-footer" runat="server" ClientIDMode="Static"&gt;
+                        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormPanelFooter --&gt;
+                    &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormPanel --&gt;
+                &lt;/asp:Panel&gt;&lt;!-- #pnlContactForm --&gt;
+            &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormCol --&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormRow --&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    Following the same pattern for the other fields will result in the complete
+    form. Each field may need different validations, and the state field uses a
+    <code>DropDownList</code> control, but the approach is the same for each field.
+</p>
+<p>
+    In the footer, we need to add a &ldquo;Cancel&rdquo; button and a
+    &ldquo;Save Contact&rdquo; button. Drag a <code>Panel</code> control inside
+    <code>pnlContactFormPanelFooter</code> and change the ID to
+    <code>pnlContactFormActions</code>. Set the <code>CssClass</code> to
+    <code>clearfix</code> and make the ID static. The <code>clearfix</code> class
+    fixes display issues resulting from floating one button to the left and
+    another button to the right. The cancel button can be a link back to the
+    index page. The submit button can be a <code>Button</code> control, and we
+    will handle the form submission when it is clicked. The complete page should
+    look like this:
+</p>
+<div class="panel-group" id="new6-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#new6-source" href="#new6-source-body">
+                    <code>Contacts\New.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="new6-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="New.aspx.vr" Inherits="Contacts_New" Title="New Contact" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+        &lt;asp:Panel ID="pnlPageHeader" CssClass="page-header" runat="server" ClientIDMode="Static"&gt;
+            &lt;h2&gt;Contact Form&lt;/h2&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlPageHeader --&gt;
+        &lt;asp:Panel ID="pnlContactFormRow" CssClass="row" runat="server" ClientIDMode="Static"&gt;
+            &lt;asp:Panel ID="pnlContactFormCol" CssClass="col-sm-6 col-sm-offset-3" runat="server" ClientIDMode="Static"&gt;
+                &lt;asp:Panel ID="pnlContactForm" CssClass="form-horizontal" runat="server" ClientIDMode="Static"&gt;
+                    &lt;asp:Panel ID="pnlContactFormPanel" CssClass="panel panel-default" runat="server" ClientIDMode="Static"&gt;
+                        &lt;asp:Panel ID="pnlContactFormPanelHeading" CssClass="panel-heading" runat="server" ClientIDMode="Static"&gt;
+                            &lt;h3 class="panel-title"&gt;New Contact&lt;/h3&gt;
+                        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormPanelHeading --&gt;
+                        &lt;asp:Panel ID="pnlContactFormPanelBody" CssClass="panel-body" runat="server" ClientIDMode="Static"&gt;
+                            &lt;asp:Panel ID="pnlCompany" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblCompany" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtCompany"
+                                    Text="Company"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtCompany" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtCompany" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredCompany" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtCompany"
+                                        ErrorMessage="Please enter the company name"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthCompany" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtCompany"
+                                        ErrorMessage="Company cannot be longer than 40 characters"
+                                        ValidationExpression="^.{0,40}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlFirstName" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblFirstName" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtFirstName"
+                                    Text="First Name"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtFirstName" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredFirstName" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtFirstName"
+                                        ErrorMessage="Please enter the first name"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthFirstName" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtFirstName"
+                                        ErrorMessage="First name cannot be longer than 40 characters"
+                                        ValidationExpression="^.{0,40}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlLastName" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblLastName" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtLastName"
+                                    Text="Last Name"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtLastName" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtLastName" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredLastName" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtLastName"
+                                        ErrorMessage="Please enter the last name"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthLastName" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtLastName"
+                                        ErrorMessage="Last name cannot be longer than 40 characters"
+                                        ValidationExpression="^.{0,40}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlEmail" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblEmail" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtEmail"
+                                    Text="Email"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtEmail" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredEmail" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtEmail"
+                                        ErrorMessage="Please enter the email address"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthEmail" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtEmail"
+                                        ErrorMessage="Email cannot be longer than 40 characters"
+                                        ValidationExpression="^.{0,40}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="validEmail" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtEmail"
+                                        ErrorMessage="Email is not valid"
+                                        ValidationExpression="^([a-zA-Z0-9][-.\w]*@([a-zA-Z0-9][-\w]*[a-zA-Z0-9]\.)+[a-zA-Z]{2,9})$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlPhone" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblPhone" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtPhone"
+                                    Text="Phone"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtPhone" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtPhone" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredPhone" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtPhone"
+                                        ErrorMessage="Please enter the phone"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthPhone" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtPhone"
+                                        ErrorMessage="Phone cannot be longer than 12 characters"
+                                        ValidationExpression="^.{0,12}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="numericPhone" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtPhone"
+                                        ErrorMessage="Phone must be numeric only"
+                                        ValidationExpression="\d+"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlAddress1" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblAddress1" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtAddress1"
+                                    Text="Address Line 1"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtAddress1" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtAddress1" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredAddress1" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtAddress1"
+                                        ErrorMessage="Please enter the address line 1"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthAddress1" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtAddress1"
+                                        ErrorMessage="Address line 1 cannot be longer than 35 characters"
+                                        ValidationExpression="^.{0,35}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlAddress2" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblAddress2" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtAddress2"
+                                    Text="Address Line 2"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtAddress2" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtAddress2" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthAddress2" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtAddress2"
+                                        ErrorMessage="Address line 2 cannot be longer than 35 characters"
+                                        ValidationExpression="^.{0,35}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlCity" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblCity" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtCity"
+                                    Text="City"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtCity" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtCity" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredCity" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtCity"
+                                        ErrorMessage="Please enter the city"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthCity" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtCity"
+                                        ErrorMessage="City cannot be longer than 30 characters"
+                                        ValidationExpression="^.{0,30}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlState" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblState" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="ddlState"
+                                    Text="State"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlDdlState" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:DropDownList ID="ddlState" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:DropDownList&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredState" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="ddlState"
+                                        ErrorMessage="Please select the state"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlPostalCode" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblPostalCode" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtPostalCode"
+                                    Text="Postal Code"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtPostalCode" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtPostalCode" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredPostalCode" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtPostalCode"
+                                        ErrorMessage="Please enter the postal code"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthPostalCode" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtPostalCode"
+                                        ErrorMessage="Postal code cannot be longer than 10 characters"
+                                        ValidationExpression="^.{0,10}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormPanelBody --&gt;
+                        &lt;asp:Panel ID="pnlContactFormPanelFooter" CssClass="panel-footer" runat="server" ClientIDMode="Static"&gt;
+                            &lt;asp:Panel ID="pnlContactFormPanelActions" CssClass="clearfix" runat="server" ClientIDMode="Static"&gt;
+                                &lt;a href="&lt;%= Page.ResolveUrl("~") %&gt;Contacts/Index.aspx" class="btn btn-sm btn-default"&gt;
+                                    &lt;span class="glyphicon glyphicon-ban-circle"&gt;&lt;/span&gt; Cancel
+                                &lt;/a&gt;
+                                &lt;asp:Button ID="btnSubmit" CssClass="btn btn-sm btn-primary pull-right" runat="server" Text="Save Contact" /&gt;
+                            &lt;/asp:Panel&gt;
+                        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormPanelFooter --&gt;
+                    &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormPanel --&gt;
+                &lt;/asp:Panel&gt;&lt;!-- #pnlContactForm --&gt;
+            &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormCol --&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormRow --&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
 <hr>
 <ul class="pager">
     <li class="previous"><a href="/Lab2014.BootstrapApp/#tutorial/part-5-show" data-asna-nav="route:tutorial:show">&larr; Previous</a></li>
