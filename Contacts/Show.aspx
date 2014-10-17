@@ -16,7 +16,7 @@
             <h2>Contact Detail</h2>
         </asp:Panel><!-- #pnlPageHeader -->
         <asp:Panel ID="pnlContactDetailsRow" CssClass="row" runat="server" ClientIDMode="Static">
-            <asp:Panel ID="pnlContactDetailsCol" CssClass="col-sm-8 col-sm-offset-2" runat="server">
+            <asp:Panel ID="pnlContactDetailsCol" CssClass="col-sm-8 col-sm-offset-2" runat="server" ClientIDMode="Static">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
