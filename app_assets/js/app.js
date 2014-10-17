@@ -63,8 +63,8 @@ function (Backbone, Marionette, $, _) {
     App.on('asna:page_load', function () {
         updateScrollTop();
         $('#main').fadeIn('slow', function () {
-            addNavTriggers();
             prettyPrint();
+            addNavTriggers();
         });
     });
 
