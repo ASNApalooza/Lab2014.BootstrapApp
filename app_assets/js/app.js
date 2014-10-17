@@ -29,12 +29,14 @@ function (Backbone, Marionette, $, _) {
         if ($triggers.length > 0) {
             $triggers.on('click.asna-nav', function (e) {
                 e.preventDefault();
-                var $target = $(e.target);
-                var eventName = $target.attr('data-asna-nav');
-                var args = $target.attr('data-asna-nav-args');
-                args = args ? args.split('|') : [];
-                args.unshift(eventName);
-                App.trigger.apply(App, args);
+                $('#main').fadeOut('slow', function () {
+                    var $target = $(e.target);
+                    var eventName = $target.attr('data-asna-nav');
+                    var args = $target.attr('data-asna-nav-args');
+                    args = args ? args.split('|') : [];
+                    args.unshift(eventName);
+                    App.trigger.apply(App, args);
+                });
             });
         }
     };
@@ -47,41 +49,23 @@ function (Backbone, Marionette, $, _) {
         }
     };
 
-    // Add scrollTop to history state
-    var updateHistoryState = function () {
-        if (Modernizr.history) {
-            history.replaceState(
-                _.extend(history.state || {}, {
-                    scrollTop: $('html').scrollTop()
-                }),
-                document.title,
-                window.location
-            );
-        }
-    };
-
-    // Read scrollTop from history state
+    // Reset scrollTop
     var updateScrollTop = function () {
-        var scrollTop = 0;
-        if (Modernizr.history) {
-            if (history.state && history.state.scrollTop) {
-                scrollTop = history.state.scrollTop;
-            }
-        }
-        $('html').scrollTop(scrollTop);
+        $('html').scrollTop(0);
     };
 
     // Custom page_unload event handler
     App.on('asna:page_unload', function () {
-        updateHistoryState();
         removeNavTriggers();
     });
 
     // Custom page_load event handler
     App.on('asna:page_load', function () {
-        addNavTriggers();
-        prettyPrint();
         updateScrollTop();
+        $('#main').fadeIn('slow', function () {
+            addNavTriggers();
+            prettyPrint();
+        });
     });
 
     // Enable routing
