@@ -108,7 +108,7 @@
 <p>
     Between the <code>&lt;a&gt;</code> tags, create an empty <code>&lt;span&gt;</code>
     element with the following classes:
-    <code class="prettyprint">&lt;span class="glyphicon glyphicon-plus"&gt;&lt;/span&gt;</code>
+    <pre class="prettyprint">&lt;span class="glyphicon glyphicon-plus"&gt;&lt;/span&gt;</pre>
     Glyphicons are font-based icons you can create with simple markup. No need to
     load images for simple icons! Leave a space after the icon span and add the
     New Contact text. The page should now look similar to this:
@@ -346,8 +346,8 @@ BegSr Page_Load Access(*Private) Event(*This.Load)
     gridView.DataSource = contacts
     gridView.DataBind()
 
-    // Add <thead> and <tbody> elements to the HTML table
-    If (gridView.HeaderRow <> *Nothing)
+    // Add &lt;thead&gt; and &lt;tbody&gt; elements to the HTML table
+    If (gridView.HeaderRow &lt;&gt; *Nothing)
         gridView.HeaderRow.TableSection = TableRowSection.TableHeader
     EndIf
 EndSr
@@ -411,8 +411,8 @@ BegClass Contacts_Index Partial(*Yes) Access(*Public) Extends(BasePage)
         gridView.DataSource = contacts
         gridView.DataBind()
 
-        // Add <thead> and <tbody> elements to the HTML table
-        If (gridView.HeaderRow <> *Nothing)
+        // Add &lt;thead&gt; and &lt;tbody&gt; elements to the HTML table
+        If (gridView.HeaderRow &lt;&gt; *Nothing)
             gridView.HeaderRow.TableSection = TableRowSection.TableHeader
         EndIf
     EndSr

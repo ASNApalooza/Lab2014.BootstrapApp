@@ -1,6 +1,249 @@
 <div class="page-header">
     <h2>Part 5: Show</h2>
 </div>
+<p>
+    The next page we create must show all of the details from a single contact.
+    Create a new ASPX page in the <code>Contacts</code> folder called
+    <code>Show.aspx</code>. Make sure to select the Master Page and use a
+    code-behind file.
+</p>
+<p>
+    Change the Title attribute from <code>Untitled Page</code> to
+    <code>Contact Detail</code> and change the ID of the <code>Content</code>
+    control to <code>contentMain</code>. While we&rsquo;re at it, let&rsquo;s add
+    the main content panel. Drag a <code>Panel</code> control into the content
+    area. Set the ID to <code>pnlMainContent</code> and set the ID static. The
+    page should look like this:
+</p>
+<div class="panel-group" id="show1-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#show1-source" href="#show1-source-body">
+                    <code>Contacts\Show.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="show1-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="Show.aspx.vr" Inherits="Contacts_Show" Title="Contact Detail" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    We will start with a control panel, similar to the index page. When viewing a
+    single contact, we should have a button that takes us back to the index. Another
+    button that takes us to the edit form would be useful as well.
+</p>
+<p>
+    Drag a <code>Panel</code> control inside <code>pnlMainContent</code> and set
+    the ID to <code>pnlShowControls</code>. Set the <code>CssClass</code> to
+    <code>pull-right</code> and the <code>ClientIDMode</code> to <code>Static</code>.
+</p>
+<p>
+    We can create a Bootstrap
+    <a href="http://getbootstrap.com/components/#btn-groups">button group</a> to
+    turn the buttons into a bar of buttons. Start by dragging a <code>Panel</code>
+    control inside <code>pnlShowControls</code> and set the ID to
+    <code>pnlShowControlsBtnGroup</code>. Set the <code>CssClass</code> to
+    <code>btn-group btn-group-sm</code> and make the ID static. Notice this allows
+    us to set the button size in one place.
+</p>
+<p>
+    Create a link that points back to the index page and set the classes:
+    <code class="prettyprint">class="btn btn-info"</code>. To add a left-pointing
+    arrow before the text, add a span tag with the classes:
+    <pre class="prettyprint">&lt;span class="glyphicon glyphicon-arrow-left"&gt;&lt;/span&gt; Index</pre>
+    The edit button can be a link as well, but we are passing the contact ID in the
+    query string. Since the show page requires the ID in the same way, we can read
+    the ID and use it to build the URL for the link. That will look like this:
+    <pre class="prettyprint">&lt;%= Page.ResolveUrl("~") %&gt;Contacts/Edit.aspx?id=&lt;%= Request["id"].Trim() %&gt;</pre>
+    We will keep the edit color consistent with the index page by using these classes:
+    <code class="prettyprint">class="btn btn-primary"</code>. We can also add a small
+    pencil icon to the edit button with the following markup:
+    <pre class="prettyprint">&lt;span class="glyphicon glyphicon-pencil"&gt;&lt;/span&gt; Edit</pre>
+    The page should now look like this:
+</p>
+<div class="panel-group" id="show2-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#show2-source" href="#show2-source-body">
+                    <code>Contacts\Show.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="show2-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="Show.aspx.vr" Inherits="Contacts_Show" Title="Contact Detail" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+        &lt;asp:Panel ID="pnlShowControls" CssClass="pull-right" runat="server" ClientIDMode="Static"&gt;
+            &lt;asp:Panel ID="pnlShowControlsBtnGroup" CssClass="btn-group btn-group-sm" runat="server" ClientIDMode="Static"&gt;
+                &lt;a href="&lt;%= Page.ResolveUrl("~") %&gt;Contacts/Index.aspx" class="btn btn-info"&gt;
+                    &lt;span class="glyphicon glyphicon-arrow-left"&gt;&lt;/span&gt; Index
+                &lt;/a&gt;
+                &lt;a href="&lt;%= Page.ResolveUrl("~") %&gt;Contacts/Edit.aspx?id=&lt;%= Request["id"].Trim() %&gt;" class="btn btn-primary"&gt;
+                    &lt;span class="glyphicon glyphicon-pencil"&gt;&lt;/span&gt; Edit
+                &lt;/a&gt;
+            &lt;/asp:Panel&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlShowControls --&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    Now add a page header using the same process as the index page. Drag in a
+    <code>Panel</code> control after <code>pnlShowControls</code> and set the ID
+    to <code>pnlPageHeader</code>. The <code>CssClass</code> should be
+    <code>page-header</code> and the <code>ClientIDMode</code> should be
+    <code>Static</code>. Add an <code>&lt;h2&gt;</code> tag with the text
+    <code>Contact Detail</code>. The page should look like this:
+</p>
+<div class="panel-group" id="show3-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#show3-source" href="#show3-source-body">
+                    <code>Contacts\Show.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="show3-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="Show.aspx.vr" Inherits="Contacts_Show" Title="Contact Detail" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+        &lt;asp:Panel ID="pnlShowControls" CssClass="pull-right" runat="server" ClientIDMode="Static"&gt;
+            &lt;asp:Panel ID="pnlShowControlsBtnGroup" CssClass="btn-group btn-group-sm" runat="server" ClientIDMode="Static"&gt;
+                &lt;a href="&lt;%= Page.ResolveUrl("~") %&gt;Contacts/Index.aspx" class="btn btn-info"&gt;
+                    &lt;span class="glyphicon glyphicon-arrow-left"&gt;&lt;/span&gt; Index
+                &lt;/a&gt;
+                &lt;a href="&lt;%= Page.ResolveUrl("~") %&gt;Contacts/Edit.aspx?id=&lt;%= Request["id"].Trim() %&gt;" class="btn btn-primary"&gt;
+                    &lt;span class="glyphicon glyphicon-pencil"&gt;&lt;/span&gt; Edit
+                &lt;/a&gt;
+            &lt;/asp:Panel&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlShowControls --&gt;
+        &lt;asp:Panel ID="pnlPageHeader" CssClass="page-header" runat="server" ClientIDMode="Static"&gt;
+            &lt;h2&gt;Contact Detail&lt;/h2&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlPageHeader --&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    In order to display the details of a single contact, it would be convenient to
+    have access to each property without relying on a specific control. That would
+    allow us to switch quickly between designs if needed. For example, we might want
+    to show values in an unordered list and later switch to using a table. To print
+    the company name, it would be nice for that to be as simple as:
+    <pre class="prettyprint">&lt;%= contactEntity.company %&gt;</pre>
+    To set this up, we need to write some code-behind.
+</p>
+<p>
+    Open <code>Contacts\Show.aspx.vr</code> and make sure it extends the
+    <code>BasePage</code>. Create a <em>private</em> <code>_contactEntity</code> variable
+    of type <code>Contact</code>. Create a <em>protected</em> <code>contactEntity</code>
+    property that only contains a getter. This will allow the code-behind class to
+    set the private variable while the protected property will be available in the
+    markup (read-only).
+</p>
+<p>
+    We can remove the <code>Page_Unload</code> method. The <code>Page_Load</code>
+    method needs to set the <code>_contactEntity</code> value. Since we have
+    access to the <code>*Base.FetchContact()</code> method, we only need to add one
+    line. The final code should look like this:
+</p>
+<div class="panel-group" id="show-vr-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#show-vr-source" href="#show-vr-source-body">
+                    <code>Contacts\Show.aspx.vr</code>
+                </a>
+            </h4>
+        </div>
+        <div id="show-vr-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+Using System
+Using System.Data
+Using System.Configuration
+Using System.Collections
+Using System.Web
+Using System.Web.Security
+Using System.Web.UI
+Using System.Web.UI.WebControls
+Using System.Web.UI.WebControls.WebParts
+Using System.Web.UI.HtmlControls
+
+BegClass Contacts_Show Partial(*Yes) Access(*Public) Extends(BasePage)
+
+    DclFld _contactEntity Type(Contact) Access(*Private)
+    BegProp contactEntity Type(Contact) Access(*Protected)
+        BegGet
+            LeaveSr _contactEntity
+        EndGet
+    EndProp
+
+    BegSr Page_Load Access(*Private) Event(*This.Load)
+        DclSrParm sender Type(*Object)
+        DclSrParm e Type(System.EventArgs)
+
+        _contactEntity = *Base.FetchContact()
+    EndSr
+
+EndClass
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    Switching back to <code>Contacts\Show.aspx</code>, we&rsquo;ve decided to use
+    a two-column table to display the contact details. We would also like to keep
+    the display from taking the entire width of the screen, so we will use the Bootstrap
+    <a href="http://getbootstrap.com/css/#grid">grid system</a> to center and size
+    the display area.
+</p>
+<p>
+    A Bootstrap grid consists of an outer container (which we set in the Master
+    Page), rows, and columns. The size of each column is a number between 1 and 12,
+    and additional rows can be nested within each column. If needed, you can use
+    the grid system to create complex layouts.
+</p>
+<p>
+    Drag a new <code>Panel</code> control after <code>pnlPageHeader</code> and set
+    the ID to <code>pnlContactDetailsRow</code>. Set the <code>CssClass</code> to
+    <code>row</code> and make the ID static. Drag another <code>Panel</code> control
+    inside <code>pnlContactDetailsRow</code> and set the ID to <code>pnlContactDetailsCol</code>.
+    Set the <code>CssClass</code> to <code>col-sm-8 col-sm-offset-2</code> and make
+    the ID static. The <code>col-sm-8</code> class sets the size of the column to
+    2/3 of the available width. The <code>col-sm-offset-2</code> pads the left side
+    of the column with 2 of the remaining 4 spaces. That effectively centers the
+    column.
+</p>
 <hr>
 <ul class="pager">
     <li class="previous"><a href="/Lab2014.BootstrapApp/#tutorial/part-4-index" data-asna-nav="route:tutorial:index">&larr; Previous</a></li>
