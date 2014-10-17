@@ -1,6 +1,196 @@
 <div class="page-header">
     <h2>Part 6: Forms</h2>
 </div>
+<p>
+    We will now create a form to create a new contact and edit a contact. The markup
+    for both pages will be nearly identical. In a real application, we might suggest
+    creating a <a href="http://msdn.microsoft.com/en-us/library/system.web.ui.usercontrol%28v=vs.110%29.aspx">UserControl</a>
+    to make the form reusable. In our case, we&rsquo;ll break some rules to cut-and-paste.
+</p>
+<p>
+    Create an ASPX page in the <code>Contacts</code> folder called <code>New.aspx</code>.
+    Set the Title attribute to <code>New Contact</code> and change the <code>Content</code>
+    control ID to <code>contentMain</code>. After creating the same <code>pnlMainContent</code>
+    as previous pages, the page should look like this:
+</p>
+<div class="panel-group" id="new1-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#new1-source" href="#new1-source-body">
+                    <code>Contacts\New.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="new1-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="New.aspx.vr" Inherits="Contacts_New" Title="New Contact" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    This page doesn&rsquo;t require any controls other than what is in the form,
+    so we will start with the page header. Drag a <code>Panel</code> control inside
+    <code>pnlMainContent</code> and set the ID to <code>pnlPageHeader</code>. Set
+    the <code>CssClass</code> to <code>page-header</code> and make the ID static.
+    Add an <code>&lt;h2&gt;</code> element with the text <code>Contact Form</code>.
+    The page should look like this:
+</p>
+<div class="panel-group" id="new2-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#new2-source" href="#new2-source-body">
+                    <code>Contacts\New.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="new2-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="New.aspx.vr" Inherits="Contacts_New" Title="New Contact" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+        &lt;asp:Panel ID="pnlPageHeader" CssClass="page-header" runat="server" ClientIDMode="Static"&gt;
+            &lt;h2&gt;Contact Form&lt;/h2&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlPageHeader --&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    We will use the grid system to center and constrain the size of our form.
+    Instead of taking 2/3 of the screen, we will use 1/2. Adding the grid markup
+    will result in this page:
+</p>
+<div class="panel-group" id="new3-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#new3-source" href="#new3-source-body">
+                    <code>Contacts\New.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="new3-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="New.aspx.vr" Inherits="Contacts_New" Title="New Contact" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+        &lt;asp:Panel ID="pnlPageHeader" CssClass="page-header" runat="server" ClientIDMode="Static"&gt;
+            &lt;h2&gt;Contact Form&lt;/h2&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlPageHeader --&gt;
+        &lt;asp:Panel ID="pnlContactFormRow" CssClass="row" runat="server" ClientIDMode="Static"&gt;
+            &lt;asp:Panel ID="pnlContactFormCol" CssClass="col-sm-6 col-sm-offset-3" runat="server" ClientIDMode="Static"&gt;
+            &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormCol --&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormRow --&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    We are going to use a Bootstrap form style called a
+    <a href="http://getbootstrap.com/css/#forms-horizontal">horizontal form</a>.
+    In addition, we will place the form inside a Bootstrap
+    <a href="http://getbootstrap.com/components/#panels">panel</a> contol (not
+    to be confused with the ASP.NET Panel control).
+</p>
+<p>
+    The Bootstrap form documentation tells us to add a CSS class
+    <code>form-horizontal</code> to our <code>&lt;form&gt;</code> element. In
+    ASP.NET WebForms applications, the page has one form. That form lives in our
+    Master Page, and adding a CSS class to that tag could be a bad idea. I&rsquo;ve
+    found that adding the <code>form-horizontal</code> class to a basic
+    <code>&lt;div&gt;</code> element works fine.
+</p>
+<p>
+    Drag a <code>Panel</code> control inside <code>pnlContactFormCol</code> and
+    change the ID to <code>pnlContactForm</code>. Set the <code>CssClass</code>
+    to <code>form-horizontal</code> and make the ID static. To create the Bootstrap
+    panel, drag a <code>Panel</code> control inside <code>pnlContactForm</code>
+    and change the ID to <code>pnlContactFormPanel</code>. Set the <code>CssClass</code>
+    to <code>panel panel-default</code> and make the ID static.
+</p>
+<p>
+    A Bootstrap panel can have a heading, a body, and a footer. We will use all
+    three. Drag a <code>Panel</code> control inside <code>pnlContactFormPanel</code>
+    and change the ID to <code>pnlContactFormPanelHeading</code>. Set the
+    <code>CssClass</code> to <code>panel-heading</code> and make the ID static.
+    Add an <code>&lt;h3&gt;</code> element inside the new panel with
+    <code class="prettyprint">class="panel-title"</code> and the text
+    <code>New Contact</code>.
+</p>
+<p>
+    Drag a <code>Panel</code> control after <code>pnlContactFormPanelHeading</code>
+    and change the ID to <code>pnlContactFormPanelBody</code>. Set the <code>CssClass</code>
+    to <code>panel-body</code> and make the ID static. Drag another <code>Panel</code>
+    control after <code>pnlContactFormPanelBody</code> and change the ID to
+    <code>pnlContactFormPanelFooter</code>. Set the <code>CssClass</code> to
+    <code>panel-footer</code> and make the ID static. We should have something that
+    looks like this:
+</p>
+<div class="panel-group" id="new4-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#new4-source" href="#new4-source-body">
+                    <code>Contacts\New.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="new4-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="New.aspx.vr" Inherits="Contacts_New" Title="New Contact" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+        &lt;asp:Panel ID="pnlPageHeader" CssClass="page-header" runat="server" ClientIDMode="Static"&gt;
+            &lt;h2&gt;Contact Form&lt;/h2&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlPageHeader --&gt;
+        &lt;asp:Panel ID="pnlContactFormRow" CssClass="row" runat="server" ClientIDMode="Static"&gt;
+            &lt;asp:Panel ID="pnlContactFormCol" CssClass="col-sm-6 col-sm-offset-3" runat="server" ClientIDMode="Static"&gt;
+                &lt;asp:Panel ID="pnlContactForm" CssClass="form-horizontal" runat="server" ClientIDMode="Static"&gt;
+                    &lt;asp:Panel ID="pnlContactFormPanel" CssClass="panel panel-default" runat="server" ClientIDMode="Static"&gt;
+                        &lt;asp:Panel ID="pnlContactFormPanelHeading" CssClass="panel-heading" runat="server" ClientIDMode="Static"&gt;
+                            &lt;h3 class="panel-title"&gt;New Contact&lt;/h3&gt;
+                        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormPanelHeading --&gt;
+                        &lt;asp:Panel ID="pnlContactFormPanelBody" CssClass="panel-body" runat="server" ClientIDMode="Static"&gt;
+                        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormPanelBody --&gt;
+                        &lt;asp:Panel ID="pnlContactFormPanelFooter" CssClass="panel-footer" runat="server" ClientIDMode="Static"&gt;
+                        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormPanelFooter --&gt;
+                    &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormPanel --&gt;
+                &lt;/asp:Panel&gt;&lt;!-- #pnlContactForm --&gt;
+            &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormCol --&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormRow --&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
 <hr>
 <ul class="pager">
     <li class="previous"><a href="/Lab2014.BootstrapApp/#tutorial/part-5-show" data-asna-nav="route:tutorial:show">&larr; Previous</a></li>
