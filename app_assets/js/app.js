@@ -29,6 +29,7 @@ function (Backbone, Marionette, $, _) {
         if ($triggers.length > 0) {
             $triggers.on('click.asna-nav', function (e) {
                 e.preventDefault();
+                $('#navbar-collapse').removeClass('in');
                 $('#main').fadeOut('slow', function () {
                     var $target = $(e.target);
                     var eventName = $target.attr('data-asna-nav');
