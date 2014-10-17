@@ -242,7 +242,157 @@ EndClass
     the ID static. The <code>col-sm-8</code> class sets the size of the column to
     2/3 of the available width. The <code>col-sm-offset-2</code> pads the left side
     of the column with 2 of the remaining 4 spaces. That effectively centers the
-    column.
+    column. The page should look like this:
+</p>
+<div class="panel-group" id="show4-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#show4-source" href="#show4-source-body">
+                    <code>Contacts\Show.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="show4-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="Show.aspx.vr" Inherits="Contacts_Show" Title="Contact Detail" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+        &lt;asp:Panel ID="pnlShowControls" CssClass="pull-right" runat="server" ClientIDMode="Static"&gt;
+            &lt;asp:Panel ID="pnlShowControlsBtnGroup" CssClass="btn-group btn-group-sm" runat="server" ClientIDMode="Static"&gt;
+                &lt;a href="&lt;%= Page.ResolveUrl("~") %&gt;Contacts/Index.aspx" class="btn btn-info"&gt;
+                    &lt;span class="glyphicon glyphicon-arrow-left"&gt;&lt;/span&gt; Index
+                &lt;/a&gt;
+                &lt;a href="&lt;%= Page.ResolveUrl("~") %&gt;Contacts/Edit.aspx?id=&lt;%= Request["id"].Trim() %&gt;" class="btn btn-primary"&gt;
+                    &lt;span class="glyphicon glyphicon-pencil"&gt;&lt;/span&gt; Edit
+                &lt;/a&gt;
+            &lt;/asp:Panel&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlShowControls --&gt;
+        &lt;asp:Panel ID="pnlPageHeader" CssClass="page-header" runat="server" ClientIDMode="Static"&gt;
+            &lt;h2&gt;Contact Detail&lt;/h2&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlPageHeader --&gt;
+        &lt;asp:Panel ID="pnlContactDetailsRow" CssClass="row" runat="server" ClientIDMode="Static"&gt;
+            &lt;asp:Panel ID="pnlContactDetailsCol" CssClass="col-sm-8 col-sm-offset-2" runat="server" ClientIDMode="Static"&gt;
+            &lt;/asp:Panel&gt;
+        &lt;/asp:Panel&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    Create an HTML <code>&lt;table&gt;</code> element within <code>pnlContactDetailsCol</code>.
+    Add the Bootstrap <a href="http://getbootstrap.com/css/#tables-bordered">table classes</a>
+    <code>table</code> and <code>table-bordered</code>. To complete the rest of the
+    table, we will have a heading element in the left column and a data element in
+    the right column. The finished page should look like this:
+</p>
+<div class="panel-group" id="show5-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#show5-source" href="#show5-source-body">
+                    <code>Contacts\Show.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="show5-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="Show.aspx.vr" Inherits="Contacts_Show" Title="Contact Detail" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+        &lt;asp:Panel ID="pnlShowControls" CssClass="pull-right" runat="server" ClientIDMode="Static"&gt;
+            &lt;asp:Panel ID="pnlShowControlsBtnGroup" CssClass="btn-group btn-group-sm" runat="server" ClientIDMode="Static"&gt;
+                &lt;a href="&lt;%= Page.ResolveUrl("~") %&gt;Contacts/Index.aspx" class="btn btn-info"&gt;
+                    &lt;span class="glyphicon glyphicon-arrow-left"&gt;&lt;/span&gt; Index
+                &lt;/a&gt;
+                &lt;a href="&lt;%= Page.ResolveUrl("~") %&gt;Contacts/Edit.aspx?id=&lt;%= Request["id"].Trim() %&gt;" class="btn btn-primary"&gt;
+                    &lt;span class="glyphicon glyphicon-pencil"&gt;&lt;/span&gt; Edit
+                &lt;/a&gt;
+            &lt;/asp:Panel&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlShowControls --&gt;
+        &lt;asp:Panel ID="pnlPageHeader" CssClass="page-header" runat="server" ClientIDMode="Static"&gt;
+            &lt;h2&gt;Contact Detail&lt;/h2&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlPageHeader --&gt;
+        &lt;asp:Panel ID="pnlContactDetailsRow" CssClass="row" runat="server" ClientIDMode="Static"&gt;
+            &lt;asp:Panel ID="pnlContactDetailsCol" CssClass="col-sm-8 col-sm-offset-2" runat="server" ClientIDMode="Static"&gt;
+                &lt;table class="table table-bordered"&gt;
+                    &lt;thead&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;Field&lt;/th&gt;
+                            &lt;th&gt;Value&lt;/th&gt;
+                        &lt;/tr&gt;
+                    &lt;/thead&gt;
+                    &lt;tbody&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;ID&lt;/th&gt;
+                            &lt;td&gt;&lt;%= contactEntity.id %&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;Company&lt;/th&gt;
+                            &lt;td&gt;&lt;%= contactEntity.company %&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;First Name&lt;/th&gt;
+                            &lt;td&gt;&lt;%= contactEntity.firstName %&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;Last Name&lt;/th&gt;
+                            &lt;td&gt;&lt;%= contactEntity.lastName %&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;Email&lt;/th&gt;
+                            &lt;td&gt;&lt;%= contactEntity.email %&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;Phone&lt;/th&gt;
+                            &lt;td&gt;&lt;%= contactEntity.phone %&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;Address Line 1&lt;/th&gt;
+                            &lt;td&gt;&lt;%= contactEntity.address1 %&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;Address Line 2&lt;/th&gt;
+                            &lt;td&gt;&lt;%= contactEntity.address2 %&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;City&lt;/th&gt;
+                            &lt;td&gt;&lt;%= contactEntity.city %&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;State&lt;/th&gt;
+                            &lt;td&gt;&lt;%= contactEntity.state %&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;Postal Code&lt;/th&gt;
+                            &lt;td&gt;&lt;%= contactEntity.postalCode %&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/asp:Panel&gt;
+        &lt;/asp:Panel&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    If everything is correct, the code should compile, and we now have two working
+    pages in the application!
+</p>
+<p>
+    Click the <strong>Next</strong> button below to continue when you are ready.
 </p>
 <hr>
 <ul class="pager">
