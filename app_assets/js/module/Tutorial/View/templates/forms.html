@@ -534,6 +534,538 @@
         </div>
     </div>
 </div>
+<p>
+    For the form to work, we need to write the code-behind. Open
+    <code>Contacts\New.aspx.vr</code> and make sure it extends the
+    <code>BasePage</code>. Add a Using statement for
+    <code>System.Collections.Generic</code> and delete the <code>Page_Unload</code>
+    method. First, we need to populate the states <code>DropDownList</code>
+    control on the initial page load. The code is simple using the StateData
+    helper class. We also add an empty option that says &ldquo;Please select a
+    state&rdquo;. The class should look like this:
+</p>
+<div class="panel-group" id="new-vr1-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#new-vr1-source" href="#new-vr1-source-body">
+                    <code>Contacts\New.aspx.vr</code>
+                </a>
+            </h4>
+        </div>
+        <div id="new-vr1-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+Using System
+Using System.Data
+Using System.Configuration
+Using System.Collections
+Using System.Collections.Generic
+Using System.Web
+Using System.Web.Security
+Using System.Web.UI
+Using System.Web.UI.WebControls
+Using System.Web.UI.WebControls.WebParts
+Using System.Web.UI.HtmlControls
+
+BegClass Contacts_New Partial(*Yes) Access(*Public) Extends(BasePage)
+
+    BegSr Page_Load Access(*Private) Event(*This.Load)
+        DclSrParm sender Type(*Object)
+        DclSrParm e Type(System.EventArgs)
+
+        If (NOT Page.IsPostBack)
+            LoadStatesDropDown()
+        EndIf
+    EndSr
+
+    BegSr LoadStatesDropDown Access(*Private)
+
+        DclFld states Type(List(*Of ListItem))
+
+        ddlState.Items.Add(*New ListItem("Please select a state", ""))
+
+        states = StateData.GetStates()
+
+        ForEach item Type(ListItem) Collection(states)
+            ddlState.Items.Add(item)
+        EndFor
+    EndSr
+
+EndClass
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    Now we need to add a click event to handle <code>btnSubmit</code>. In
+    <code>Contacts\New.aspx</code> design mode, double-click on the Save Contact
+    button to create the method. In the method, create a new <code>Contact</code>
+    object and set each property from the form controls. Then retrieve the
+    contact repository from the <code>Registry</code> and pass the new contact
+    object to the <code>addContact</code> method. Finally, redirect the user
+    back to the index page. With the new method, the class should look like this:
+</p>
+<div class="panel-group" id="new-vr2-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#new-vr2-source" href="#new-vr2-source-body">
+                    <code>Contacts\New.aspx.vr</code>
+                </a>
+            </h4>
+        </div>
+        <div id="new-vr2-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+Using System
+Using System.Data
+Using System.Configuration
+Using System.Collections
+Using System.Collections.Generic
+Using System.Web
+Using System.Web.Security
+Using System.Web.UI
+Using System.Web.UI.WebControls
+Using System.Web.UI.WebControls.WebParts
+Using System.Web.UI.HtmlControls
+
+BegClass Contacts_New Partial(*Yes) Access(*Public) Extends(BasePage)
+
+    BegSr Page_Load Access(*Private) Event(*This.Load)
+        DclSrParm sender Type(*Object)
+        DclSrParm e Type(System.EventArgs)
+
+        If (NOT Page.IsPostBack)
+            LoadStatesDropDown()
+        EndIf
+    EndSr
+
+    BegSr LoadStatesDropDown Access(*Private)
+
+        DclFld states Type(List(*Of ListItem))
+
+        ddlState.Items.Add(*New ListItem("Please select a state", ""))
+
+        states = StateData.GetStates()
+
+        ForEach item Type(ListItem) Collection(states)
+            ddlState.Items.Add(item)
+        EndFor
+    EndSr
+
+    BegSr btnSubmit_Click Access(*Private) Event(*This.btnSubmit.Click)
+        DclSrParm sender Type(*Object)
+        DclSrParm e Type(System.EventArgs)
+
+        DclFld contactEntity Type(Contact)
+        DclFld contactRepo Type(IContactRepository)
+
+        contactEntity = *New Contact()
+
+        contactEntity.company = txtCompany.Text.Trim()
+        contactEntity.firstName = txtFirstName.Text.Trim()
+        contactEntity.lastName = txtLastName.Text.Trim()
+        contactEntity.email = txtEmail.Text.Trim()
+        contactEntity.phone = txtPhone.Text.Trim()
+        contactEntity.address1 = txtAddress1.Text.Trim()
+        If (Not String.IsNullOrEmpty(txtAddress2.Text.Trim()))
+            contactEntity.address2 = txtAddress2.Text.Trim()
+        Else
+            contactEntity.address2 = *Nothing
+        EndIf
+        contactEntity.city = txtCity.Text.Trim()
+        contactEntity.state = ddlState.SelectedValue.Trim()
+        contactEntity.postalCode = txtPostalCode.Text.Trim()
+
+        contactRepo = *Base.serviceRegistry.GetContactRepository()
+        contactRepo.AddContact(contactEntity)
+
+        Response.Redirect("Index.aspx")
+    EndSr
+
+EndClass
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    If everything is correct, you should be able to run the application and add
+    contacts with the new contact form. The edit contact page will be easy now,
+    so let&rsquo;s finish that up.
+</p>
+<p>
+    Create a new ASPX page in the <code>Contacts</code> folder called
+    <code>Edit.aspx</code>. Set the Title attribute to <code>Edit Contact</code>.
+    Now replace everything except the first line with the contents of
+    <code>Contacts\New.aspx</code> starting on line 2. We&rsquo;ll make one
+    small change. Replace &ldquo;New Contact&rdquo; in the panel title with a
+    <code>Literal</code> control from the Toolbox. Change the ID of the control
+    to <code>contactName</code>. We will set this value in the code behind. The
+    page looks like this:
+</p>
+<div class="panel-group" id="edit-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#edit-source" href="#edit-source-body">
+                    <code>Contacts\Edit.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="edit-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="Edit.aspx.vr" Inherits="Contacts_Edit" Title="Edit Contact" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+        &lt;asp:Panel ID="pnlPageHeader" CssClass="page-header" runat="server" ClientIDMode="Static"&gt;
+            &lt;h2&gt;Contact Form&lt;/h2&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlPageHeader --&gt;
+        &lt;asp:Panel ID="pnlContactFormRow" CssClass="row" runat="server" ClientIDMode="Static"&gt;
+            &lt;asp:Panel ID="pnlContactFormCol" CssClass="col-sm-6 col-sm-offset-3" runat="server" ClientIDMode="Static"&gt;
+                &lt;asp:Panel ID="pnlContactForm" CssClass="form-horizontal" runat="server" ClientIDMode="Static"&gt;
+                    &lt;asp:Panel ID="pnlContactFormPanel" CssClass="panel panel-default" runat="server" ClientIDMode="Static"&gt;
+                        &lt;asp:Panel ID="pnlContactFormPanelHeading" CssClass="panel-heading" runat="server" ClientIDMode="Static"&gt;
+                            &lt;h3 class="panel-title"&gt;&lt;asp:Literal ID="contactName" runat="server"&gt;&lt;/asp:Literal&gt;&lt;/h3&gt;
+                        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormPanelHeading --&gt;
+                        &lt;asp:Panel ID="pnlContactFormPanelBody" CssClass="panel-body" runat="server" ClientIDMode="Static"&gt;
+                            &lt;asp:Panel ID="pnlCompany" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblCompany" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtCompany"
+                                    Text="Company"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtCompany" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtCompany" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredCompany" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtCompany"
+                                        ErrorMessage="Please enter the company name"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthCompany" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtCompany"
+                                        ErrorMessage="Company cannot be longer than 40 characters"
+                                        ValidationExpression="^.{0,40}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlFirstName" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblFirstName" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtFirstName"
+                                    Text="First Name"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtFirstName" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredFirstName" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtFirstName"
+                                        ErrorMessage="Please enter the first name"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthFirstName" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtFirstName"
+                                        ErrorMessage="First name cannot be longer than 40 characters"
+                                        ValidationExpression="^.{0,40}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlLastName" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblLastName" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtLastName"
+                                    Text="Last Name"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtLastName" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtLastName" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredLastName" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtLastName"
+                                        ErrorMessage="Please enter the last name"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthLastName" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtLastName"
+                                        ErrorMessage="Last name cannot be longer than 40 characters"
+                                        ValidationExpression="^.{0,40}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlEmail" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblEmail" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtEmail"
+                                    Text="Email"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtEmail" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredEmail" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtEmail"
+                                        ErrorMessage="Please enter the email address"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthEmail" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtEmail"
+                                        ErrorMessage="Email cannot be longer than 40 characters"
+                                        ValidationExpression="^.{0,40}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="validEmail" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtEmail"
+                                        ErrorMessage="Email is not valid"
+                                        ValidationExpression="^([a-zA-Z0-9][-.\w]*@([a-zA-Z0-9][-\w]*[a-zA-Z0-9]\.)+[a-zA-Z]{2,9})$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlPhone" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblPhone" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtPhone"
+                                    Text="Phone"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtPhone" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtPhone" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredPhone" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtPhone"
+                                        ErrorMessage="Please enter the phone"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthPhone" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtPhone"
+                                        ErrorMessage="Phone cannot be longer than 12 characters"
+                                        ValidationExpression="^.{0,12}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="numericPhone" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtPhone"
+                                        ErrorMessage="Phone must be numeric only"
+                                        ValidationExpression="\d+"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlAddress1" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblAddress1" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtAddress1"
+                                    Text="Address Line 1"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtAddress1" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtAddress1" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredAddress1" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtAddress1"
+                                        ErrorMessage="Please enter the address line 1"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthAddress1" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtAddress1"
+                                        ErrorMessage="Address line 1 cannot be longer than 35 characters"
+                                        ValidationExpression="^.{0,35}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlAddress2" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblAddress2" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtAddress2"
+                                    Text="Address Line 2"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtAddress2" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtAddress2" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthAddress2" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtAddress2"
+                                        ErrorMessage="Address line 2 cannot be longer than 35 characters"
+                                        ValidationExpression="^.{0,35}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlCity" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblCity" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtCity"
+                                    Text="City"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtCity" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtCity" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredCity" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtCity"
+                                        ErrorMessage="Please enter the city"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthCity" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtCity"
+                                        ErrorMessage="City cannot be longer than 30 characters"
+                                        ValidationExpression="^.{0,30}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlState" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblState" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="ddlState"
+                                    Text="State"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlDdlState" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:DropDownList ID="ddlState" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:DropDownList&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredState" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="ddlState"
+                                        ErrorMessage="Please select the state"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                            &lt;asp:Panel ID="pnlPostalCode" runat="server" CssClass="form-group" ClientIDMode="Static"&gt;
+                                &lt;asp:Label ID="lblPostalCode" CssClass="col-sm-3 control-label" runat="server" ClientIDMode="Static"
+                                    AssociatedControlID="txtPostalCode"
+                                    Text="Postal Code"&gt;&lt;/asp:Label&gt;
+                                &lt;asp:Panel ID="pnlTxtPostalCode" CssClass="col-sm-9" runat="server" ClientIDMode="Static"&gt;
+                                    &lt;asp:TextBox ID="txtPostalCode" runat="server" CssClass="form-control" ClientIDMode="Static"&gt;&lt;/asp:TextBox&gt;
+                                    &lt;asp:RequiredFieldValidator ID="requiredPostalCode" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtPostalCode"
+                                        ErrorMessage="Please enter the postal code"&gt;&lt;/asp:RequiredFieldValidator&gt;
+                                    &lt;asp:RegularExpressionValidator ID="lengthPostalCode" runat="server"
+                                        Display="Dynamic"
+                                        ControlToValidate="txtPostalCode"
+                                        ErrorMessage="Postal code cannot be longer than 10 characters"
+                                        ValidationExpression="^.{0,10}$"&gt;&lt;/asp:RegularExpressionValidator&gt;
+                                &lt;/asp:Panel&gt;
+                            &lt;/asp:Panel&gt;
+                        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormPanelBody --&gt;
+                        &lt;asp:Panel ID="pnlContactFormPanelFooter" CssClass="panel-footer" runat="server" ClientIDMode="Static"&gt;
+                            &lt;asp:Panel ID="pnlContactFormPanelActions" CssClass="clearfix" runat="server" ClientIDMode="Static"&gt;
+                                &lt;a href="&lt;%= Page.ResolveUrl("~") %&gt;Contacts/Index.aspx" class="btn btn-sm btn-default"&gt;
+                                    &lt;span class="glyphicon glyphicon-ban-circle"&gt;&lt;/span&gt; Cancel
+                                &lt;/a&gt;
+                                &lt;asp:Button ID="btnSubmit" CssClass="btn btn-sm btn-primary pull-right" runat="server" Text="Save Contact" /&gt;
+                            &lt;/asp:Panel&gt;
+                        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormPanelFooter --&gt;
+                    &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormPanel --&gt;
+                &lt;/asp:Panel&gt;&lt;!-- #pnlContactForm --&gt;
+            &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormCol --&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlContactFormRow --&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    The code-behind for the edit page is also similar to the new page. In
+    addition to loading the states, we will need to set the initial control
+    values on the initial page load. Fetch the contact using the
+    <code>*Base.FetchContact()</code> method. Set the <code>Text</code> of the
+    <code>contactName</code> control to be the contact first name, a space, then
+    the contact last name. Then set the form fields to the values from the fetched
+    contact.
+</p>
+<div class="alert alert-info">
+    It is important to set the form fields only on the initial page load. View
+    state will keep the values after then, and we do not want to replace user
+    input with values from the database during a post-back.
+</div>
+<p>
+    In the <code>btnSubmit_Click</code> method we need to fetch the contact
+    instead of creating a new one. That means we also use the <code>UpdateContact</code>
+    method instead of <code>AddContact</code>. Finally, we will redirect the
+    user to the <code>Show.aspx</code> page instead of the index page, which
+    requires we add the contact ID to the query string. The class code should
+    look like this:
+</p>
+<div class="panel-group" id="edit-vr-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#edit-vr-source" href="#edit-vr-source-body">
+                    <code>Contacts\Edit.aspx.vr</code>
+                </a>
+            </h4>
+        </div>
+        <div id="edit-vr-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+Using System
+Using System.Data
+Using System.Configuration
+Using System.Collections
+Using System.Collections.Generic
+Using System.Web
+Using System.Web.Security
+Using System.Web.UI
+Using System.Web.UI.WebControls
+Using System.Web.UI.WebControls.WebParts
+Using System.Web.UI.HtmlControls
+
+BegClass Contacts_Edit Partial(*Yes) Access(*Public) Extends(BasePage)
+
+    BegSr Page_Load Access(*Private) Event(*This.Load)
+        DclSrParm sender Type(*Object)
+        DclSrParm e Type(System.EventArgs)
+
+        If (NOT Page.IsPostBack)
+            LoadStatesDropDown()
+            LoadContactData()
+        EndIf
+    EndSr
+
+    BegSr LoadStatesDropDown Access(*Private)
+
+        DclFld states Type(List(*Of ListItem))
+
+        ddlState.Items.Add(*New ListItem("Please select a state", ""))
+
+        states = StateData.GetStates()
+
+        ForEach item Type(ListItem) Collection(states)
+            ddlState.Items.Add(item)
+        EndFor
+    EndSr
+
+    BegSr LoadContactData Access(*Private)
+
+        DclFld contactEntity Type(Contact)
+
+        contactEntity = *Base.FetchContact()
+
+        // Contact name for the panel heading
+        contactName.Text = contactEntity.firstName.Trim() + " " + contactEntity.lastName.Trim()
+
+        // Form fields
+        txtCompany.Text = contactEntity.company.Trim()
+        txtFirstName.Text = contactEntity.firstName.Trim()
+        txtLastName.Text = contactEntity.lastName.Trim()
+        txtEmail.Text = contactEntity.email.Trim()
+        txtPhone.Text = contactEntity.phone.Trim()
+        txtAddress1.Text = contactEntity.address1.Trim()
+        If (contactEntity.address2 <> *Nothing)
+            txtAddress2.Text = contactEntity.address2.ToString().Trim()
+        Else
+            txtAddress2.Text = String.Empty
+        EndIf
+        txtCity.Text = contactEntity.city.Trim()
+        ddlState.SelectedValue = contactEntity.state.Trim()
+        txtPostalCode.Text = contactEntity.postalCode.Trim()
+    EndSr
+
+    BegSr btnSubmit_Click Access(*Private) Event(*This.btnSubmit.Click)
+        DclSrParm sender Type(*Object)
+        DclSrParm e Type(System.EventArgs)
+
+        DclFld contactEntity Type(Contact)
+        DclFld contactRepo Type(IContactRepository)
+
+        contactEntity = *Base.FetchContact()
+
+        contactEntity.company = txtCompany.Text.Trim()
+        contactEntity.firstName = txtFirstName.Text.Trim()
+        contactEntity.lastName = txtLastName.Text.Trim()
+        contactEntity.email = txtEmail.Text.Trim()
+        contactEntity.phone = txtPhone.Text.Trim()
+        contactEntity.address1 = txtAddress1.Text.Trim()
+        If (Not String.IsNullOrEmpty(txtAddress2.Text.Trim()))
+            contactEntity.address2 = txtAddress2.Text.Trim()
+        Else
+            contactEntity.address2 = *Nothing
+        EndIf
+        contactEntity.city = txtCity.Text.Trim()
+        contactEntity.state = ddlState.SelectedValue.Trim()
+        contactEntity.postalCode = txtPostalCode.Text.Trim()
+
+        contactRepo = *Base.serviceRegistry.GetContactRepository()
+        contactRepo.UpdateContact(contactEntity)
+
+        Response.Redirect("Show.aspx?id=" + contactEntity.id.ToString())
+    EndSr
+
+EndClass
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    Now the application should do everything we need it to, other than deleting
+    contacts. We will complete the <code>Contacts\Delete.aspx</code> page and
+    the application in the next part.
+</p>
+<p>
+    Click the <strong>Next</strong> button below to continue when you are ready.
+</p>
 <hr>
 <ul class="pager">
     <li class="previous"><a href="/Lab2014.BootstrapApp/#tutorial/part-5-show" data-asna-nav="route:tutorial:show">&larr; Previous</a></li>
