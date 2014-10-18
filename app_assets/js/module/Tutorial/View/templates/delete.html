@@ -1,6 +1,290 @@
 <div class="page-header">
     <h2>Part 7: Delete</h2>
 </div>
+<p>
+    Now we will create the final page in this application to let us confirm when
+    a contact should be deleted. Create a new ASPX page in the <code>Contacts</code>
+    folder called <code>Delete.aspx</code>. Set the Title attribute to
+    <code>Delete Contact</code> and change the <code>Content</code> control ID
+    to <code>contentMain</code>. Add the <code>pnlMainContent</code> that exists
+    in the other pages. The page should look like this:
+</p>
+<div class="panel-group" id="delete1-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#delete1-source" href="#delete1-source-body">
+                    <code>Contacts\Delete.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="delete1-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="Delete.aspx.vr" Inherits="Contacts_Delete" Title="Delete Contact" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    Drag a <code>Panel</code> control inside <code>pnlMainContent</code> and set
+    the ID to <code>pnlPageHeader</code>. Set the <code>CssClass</code> to
+    <code>page-header</code> and make the ID static. Add an <code>&lt;h2&gt;</code>
+    element with the text <code>Delete Contact</code>. The page should look like
+    this:
+</p>
+<div class="panel-group" id="delete2-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#delete2-source" href="#delete2-source-body">
+                    <code>Contacts\Delete.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="delete2-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="Delete.aspx.vr" Inherits="Contacts_Delete" Title="Delete Contact" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+        &lt;asp:Panel ID="pnlPageHeader" CssClass="page-header" runat="server" ClientIDMode="Static"&gt;
+            &lt;h2&gt;Delete Contact&lt;/h2&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlPageHeader --&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    Now we want to create a Bootstrap <a href="http://getbootstrap.com/components/#alerts">alert</a>
+    to catch the attention of our user. An alert only requires a <code>&lt;div&gt;</code>
+    element with the class <code>alert</code> and another class to specify the color.
+    In our case, <code>alert-danger</code> works well, and we will see a red alert.
+    We can also add <code class="prettyprint">role="alert"</code> to the
+    <code>Panel</code> control for accessibility. The page looks like the following:
+</p>
+<div class="panel-group" id="delete3-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#delete3-source" href="#delete3-source-body">
+                    <code>Contacts\Delete.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="delete3-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="Delete.aspx.vr" Inherits="Contacts_Delete" Title="Delete Contact" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+        &lt;asp:Panel ID="pnlPageHeader" CssClass="page-header" runat="server" ClientIDMode="Static"&gt;
+            &lt;h2&gt;Delete Contact&lt;/h2&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlPageHeader --&gt;
+        &lt;asp:Panel ID="pnlConfirmDelete" CssClass="alert alert-danger" runat="server" role="alert" ClientIDMode="Static"&gt;
+            Are you sure you want to delete this contact?
+        &lt;/asp:Panel&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    Now to display some of the contact information. We could use the same method
+    we used in the <code>Contacts\Show.aspx</code> page. Instead, let&rsquo;s
+    demonstrate a Bootstrap <a href="http://getbootstrap.com/css/#type-lists">horizontal definition list</a>.
+    We can use <code>Literal</code> controls, and set the values from the code-behind.
+    This is just another way of doing things. While I&rsquo;m demonstrating some
+    methods, I won&rsquo;t say one is better than the other.
+</p>
+<p>
+    The page is almost complete:
+</p>
+<div class="panel-group" id="delete4-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#delete4-source" href="#delete4-source-body">
+                    <code>Contacts\Delete.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="delete4-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="Delete.aspx.vr" Inherits="Contacts_Delete" Title="Delete Contact" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+        &lt;asp:Panel ID="pnlPageHeader" CssClass="page-header" runat="server" ClientIDMode="Static"&gt;
+            &lt;h2&gt;Delete Contact&lt;/h2&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlPageHeader --&gt;
+        &lt;asp:Panel ID="pnlConfirmDelete" CssClass="alert alert-danger" runat="server" role="alert" ClientIDMode="Static"&gt;
+            Are you sure you want to delete this contact?
+        &lt;/asp:Panel&gt;
+        &lt;dl class="dl-horizontal"&gt;
+            &lt;dt&gt;Company&lt;/dt&gt;
+            &lt;dd&gt;&lt;asp:Literal ID="contactCompany" runat="server"&gt;&lt;/asp:Literal&gt;&lt;/dd&gt;
+            &lt;dt&gt;First Name&lt;/dt&gt;
+            &lt;dd&gt;&lt;asp:Literal ID="contactFirstName" runat="server"&gt;&lt;/asp:Literal&gt;&lt;/dd&gt;
+            &lt;dt&gt;Last Name&lt;/dt&gt;
+            &lt;dd&gt;&lt;asp:Literal ID="contactLastName" runat="server"&gt;&lt;/asp:Literal&gt;&lt;/dd&gt;
+            &lt;dt&gt;Email&lt;/dt&gt;
+            &lt;dd&gt;&lt;asp:Literal ID="contactEmail" runat="server"&gt;&lt;/asp:Literal&gt;&lt;/dd&gt;
+            &lt;dt&gt;Phone&lt;/dt&gt;
+            &lt;dd&gt;&lt;asp:Literal ID="contactPhone" runat="server"&gt;&lt;/asp:Literal&gt;&lt;/dd&gt;
+        &lt;/dl&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    We need to add controls that let the user choose whether to delete the
+    contact or cancel the request. Add a <code>&lt;hr /&gt;</code> tag after the
+    definition list to add some space. After adding a link to the index page and
+    a submit button, the final page should look like this:
+</p>
+<div class="panel-group" id="delete5-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#delete5-source" href="#delete5-source-body">
+                    <code>Contacts\Delete.aspx</code>
+                </a>
+            </h4>
+        </div>
+        <div id="delete5-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+&lt;%@ Page Language="AVR" MasterPageFile="~/MasterPages/MasterPage.master" AutoEventWireup="false"
+    CodeFile="Delete.aspx.vr" Inherits="Contacts_Delete" Title="Delete Contact" %&gt;
+
+&lt;asp:Content ID="contentMain" ContentPlaceHolderID="cphMain" Runat="Server"&gt;
+    &lt;asp:Panel ID="pnlMainContent" runat="server" ClientIDMode="Static"&gt;
+        &lt;asp:Panel ID="pnlPageHeader" CssClass="page-header" runat="server" ClientIDMode="Static"&gt;
+            &lt;h2&gt;Delete Contact&lt;/h2&gt;
+        &lt;/asp:Panel&gt;&lt;!-- #pnlPageHeader --&gt;
+        &lt;asp:Panel ID="pnlConfirmDelete" CssClass="alert alert-danger" runat="server" role="alert" ClientIDMode="Static"&gt;
+            Are you sure you want to delete this contact?
+        &lt;/asp:Panel&gt;
+        &lt;dl class="dl-horizontal"&gt;
+            &lt;dt&gt;Company&lt;/dt&gt;
+            &lt;dd&gt;&lt;asp:Literal ID="contactCompany" runat="server"&gt;&lt;/asp:Literal&gt;&lt;/dd&gt;
+            &lt;dt&gt;First Name&lt;/dt&gt;
+            &lt;dd&gt;&lt;asp:Literal ID="contactFirstName" runat="server"&gt;&lt;/asp:Literal&gt;&lt;/dd&gt;
+            &lt;dt&gt;Last Name&lt;/dt&gt;
+            &lt;dd&gt;&lt;asp:Literal ID="contactLastName" runat="server"&gt;&lt;/asp:Literal&gt;&lt;/dd&gt;
+            &lt;dt&gt;Email&lt;/dt&gt;
+            &lt;dd&gt;&lt;asp:Literal ID="contactEmail" runat="server"&gt;&lt;/asp:Literal&gt;&lt;/dd&gt;
+            &lt;dt&gt;Phone&lt;/dt&gt;
+            &lt;dd&gt;&lt;asp:Literal ID="contactPhone" runat="server"&gt;&lt;/asp:Literal&gt;&lt;/dd&gt;
+        &lt;/dl&gt;
+        &lt;hr /&gt;
+        &lt;a href="&lt;%= Page.ResolveUrl("~") %&gt;Contacts/Index.aspx" class="btn btn-sm btn-default"&gt;
+            &lt;span class="glyphicon glyphicon-ban-circle"&gt;&lt;/span&gt; Cancel
+        &lt;/a&gt;
+        &lt;asp:Button ID="btnSubmit" CssClass="btn btn-sm btn-primary pull-right" runat="server" Text="Delete Contact" /&gt;
+    &lt;/asp:Panel&gt;&lt;!-- #pnlMainContent --&gt;
+&lt;/asp:Content&gt;
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    The code behind is also simple. Make sure to extend the <code>BasePage</code>
+    and remove the <code>Page_Unload</code> method. The <code>Page_Load</code>
+    method should fetch the contact and set the values of the <code>Literal</code>
+    controls. The <code>btnSubmit_Click</code> handler needs to fetch the contact
+    and pass it to the <code>RemoveContact</code> method of the contact repository.
+    Then redirect to the index page. The completed class looks like this:
+</p>
+<div class="panel-group" id="delete-vr-source">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#delete-vr-source" href="#delete-vr-source-body">
+                    <code>Contacts\Delete.aspx.vr</code>
+                </a>
+            </h4>
+        </div>
+        <div id="delete-vr-source-body" class="panel-collapse collapse">
+            <div class="panel-body">
+<pre class="prettyprint linenums">
+Using System
+Using System.Data
+Using System.Configuration
+Using System.Collections
+Using System.Web
+Using System.Web.Security
+Using System.Web.UI
+Using System.Web.UI.WebControls
+Using System.Web.UI.WebControls.WebParts
+Using System.Web.UI.HtmlControls
+
+BegClass Contacts_Delete Partial(*Yes) Access(*Public) Extends(BasePage)
+
+    BegSr Page_Load Access(*Private) Event(*This.Load)
+        DclSrParm sender Type(*Object)
+        DclSrParm e Type(System.EventArgs)
+
+        DclFld contactEntity Type(Contact)
+
+        contactEntity = *Base.FetchContact()
+
+        // Contact information for display
+        contactCompany.Text = contactEntity.company
+        contactFirstName.Text = contactEntity.firstName
+        contactLastName.Text = contactEntity.lastName
+        contactEmail.Text = contactEntity.email
+        contactPhone.Text = contactEntity.phone
+    EndSr
+
+    BegSr btnSubmit_Click Access(*Private) Event(*This.btnSubmit.Click)
+        DclSrParm sender Type(*Object)
+        DclSrParm e Type(System.EventArgs)
+
+        DclFld contactEntity Type(Contact)
+        DclFld contactRepo Type(IContactRepository)
+
+        contactEntity = *Base.FetchContact()
+
+        contactRepo = *Base.serviceRegistry.GetContactRepository()
+        contactRepo.RemoveContact(contactEntity)
+
+        Response.Redirect("Index.aspx")
+    EndSr
+
+EndClass
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    If everything is correct, the application is now fully functional. Remember
+    that this application is not for production. I hope you enjoyed the tutorial!
+</p>
 <hr>
 <ul class="pager">
     <li class="previous"><a href="/Lab2014.BootstrapApp/#tutorial/part-6-forms" data-asna-nav="route:tutorial:forms">&larr; Previous</a></li>
